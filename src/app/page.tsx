@@ -1,10 +1,10 @@
-import ResumeSteps from './_components/breadcrumb/resume-steps';
 import ResumePreview from './_components/preview/resume-preview';
+import ResumeSteps from './_components/stepper/resume-steps';
 
 export default function Home() {
     return (
         <div className=''>
-            <div className='bg-slate-300 flex h-14 justify-center'>
+            <div className='bg-slate-300 flex h-16 items-center justify-center border-b border-text-light bg-accent px-4'>
                 <ResumeSteps />
             </div>
             <div className='flex w-screen'>
