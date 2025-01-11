@@ -15,10 +15,12 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
         <html lang='en' dir='ltr' suppressHydrationWarning>
-            <body className={``}>
+            <body className={`flex h-screen flex-col`}>
                 {/* <CacheProvider value={clientSideEmotionCache}> */}
-                <Header />
-                <main>{children}</main>
+                <header>
+                    <Header />
+                </header>
+                <main className='flex-1'>{children}</main>
                 {/* </CacheProvider> */}
             </body>
         </html>

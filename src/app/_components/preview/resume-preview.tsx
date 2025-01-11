@@ -1,3 +1,3 @@
 export default function ResumePreview() {
-    return <div>ResumePreview</div>;
+    return <div className='text-center'>ResumePreview</div>;
 }
