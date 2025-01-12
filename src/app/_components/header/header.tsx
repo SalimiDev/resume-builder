@@ -6,7 +6,7 @@ import Button from '@mui/material/Button';
 
 export const Header: React.FC = () => {
     return (
-        <div className='flex h-14 w-full justify-between bg-primary px-4 text-text-light'>
+        <div className='flex size-full justify-between bg-primary px-4 text-text-light'>
             <div className='flex items-center justify-center gap-4'>
                 <h2 className='font-semibold'>CV Builder</h2>
             </div>

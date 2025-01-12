@@ -61,7 +61,7 @@ export default function ResumeBuilder() {
     };
 
     return (
-        <div className='mx-auto flex h-full flex-col justify-between gap-8 p-4'>
+        <div className='mx-auto flex flex-col'>
             <div>
                 <div className='mb-4 flex flex-col gap-4 border-b-2 pb-4 text-text-dark'>
                     <h1 className='text-2xl font-bold'>{steps[step].title}</h1>
@@ -71,7 +71,7 @@ export default function ResumeBuilder() {
                 <div className='rounded-md p-4'>{steps[step].component}</div>
             </div>
 
-            <div className='bottom-10 w-full'>
+            <div className='absolute bottom-8 w-full'>
                 <Stack direction='row' className='flex w-full justify-between px-11'>
                     <Button
                         variant='outlined'
