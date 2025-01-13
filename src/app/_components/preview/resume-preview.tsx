@@ -3,6 +3,7 @@
 import Image from 'next/image';
 
 import { user_placeholder1 } from '@/assets/images';
+import { useResumeDataStore } from '@/store/useResumeDataStore';
 import { AlternateEmail, GitHub, LocationOn, OpenInNew, Phone } from '@mui/icons-material';
 
 type ResumePreviewProps = {
@@ -10,6 +11,8 @@ type ResumePreviewProps = {
 };
 
 export default function ResumePreview({ scale }: ResumePreviewProps) {
+    const { resumeData } = useResumeDataStore();
+
     return (
         <div
             className='border-gray-300 flex aspect-[1/1.414] h-[297mm] w-[210mm] overflow-auto border bg-white shadow-lg'
@@ -169,11 +172,13 @@ export default function ResumePreview({ scale }: ResumePreviewProps) {
                 <div className='flex w-full flex-col gap-2'>
                     <h2 className='text-lg font-semibold'>SKILLS</h2>
                     <hr className='border' />
-                    <ul className='flex flex-wrap gap-1 text-sm'>
-                        <li>JavaScript (ES6+)</li>.<li>React.js</li>.<li>Next.js</li>.<li>TypeScript</li>.<li>Redux</li>
-                        .<li>Zustand</li>.<li>React Query</li>.<li>GraphQL</li>.<li>REST API</li>.<li>Tailwind CSS</li>.
-                        <li>Material UI</li>.<li>Responsive Design</li>.<li>Git / GitHub</li>.<li>HTML5</li>.
-                        <li>CSS3</li>
+
+                    <ul className='flex flex-wrap gap-2 text-sm'>
+                        {resumeData.skills.map((skill, index) => (
+                            <li key={index} className=''>
+                                {skill}.
+                            </li>
+                        ))}
                     </ul>
                 </div>
 

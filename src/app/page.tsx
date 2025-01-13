@@ -14,7 +14,7 @@ export default function Home() {
             {/* ستون چپ */}
             <div className='flex h-full w-1/2 flex-col overflow-auto border-r'>
                 {/* نوار بالا (استپر رزومه) */}
-                <div className='h-14 flex-shrink-0 border-b border-text-light bg-accent p-2'>
+                <div className='flex h-14 flex-shrink-0 items-center border-b border-text-light bg-accent p-2'>
                     <ResumeSteps />
                 </div>
                 {/* بقیه فضا برای فرم؛ اسکرول داخلی دارد */}
