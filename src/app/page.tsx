@@ -2,9 +2,11 @@
 
 import { useState } from 'react';
 
-import ResumeBuilder from './_components/forms';
+import { resumeSteps } from '@/utils/constants/resume-steps';
+
+import FormViewer from './_components/forms/form-viewer';
 import ResumePreview from './_components/preview/resume-preview';
-import ResumeSteps from './_components/stepper/resume-steps';
+import StepperLayout from './layouts/stepper-layout';
 
 export default function Home() {
     const [scale, setScale] = useState(0.6);
@@ -13,14 +15,13 @@ export default function Home() {
         <div className='flex size-full'>
             {/* ستون چپ */}
             <div className='flex h-full w-1/2 flex-col overflow-auto border-r'>
-                {/* نوار بالا (استپر رزومه) */}
-                <div className='flex h-14 flex-shrink-0 items-center border-b border-text-light bg-accent p-2'>
-                    <ResumeSteps />
-                </div>
-                {/* بقیه فضا برای فرم؛ اسکرول داخلی دارد */}
-                <div className='relative flex-1 overflow-y-auto overflow-x-hidden p-4'>
-                    <ResumeBuilder />
-                </div>
+                <StepperLayout steps={resumeSteps}>
+                    {(activeStep) => {
+                        const currentStepKey = resumeSteps[activeStep].key;
+
+                        return <FormViewer step={currentStepKey} />;
+                    }}
+                </StepperLayout>
             </div>
 
             {/* ستون راست */}

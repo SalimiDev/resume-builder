@@ -1,6 +1,6 @@
 import { ElementType } from 'react';
 
-export interface ResumeSectionType {
+export interface ResumeStepsType {
     title: string;
     description: string;
     key: string;

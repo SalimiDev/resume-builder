@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import { useLanguagesStore } from '@/store/useLanguagesStore';
 import languages from '@/utils/constants/language-list';
 import AddIcon from '@mui/icons-material/Add';
 import { Button } from '@mui/material';
@@ -24,6 +25,8 @@ export default function LanguagesForm() {
     const [languageData, setLanguageData] = useState<{ language: string; level: number }[]>([
         { language: '', level: 0 }
     ]);
+
+    const { addLanguage } = useLanguagesStore();
     const [isNewLanguage, setIsNewLanguage] = useState(false);
 
     const handleLanguageChange = (index: number, newValue: string) => {
@@ -31,6 +34,8 @@ export default function LanguagesForm() {
         updatedData[index].language = newValue;
         setLanguageData(updatedData);
         setIsNewLanguage(true);
+
+        console.log(newValue);
     };
 
     const handleLevelChange = (index: number, newValue: number) => {
@@ -42,8 +47,6 @@ export default function LanguagesForm() {
     const addNewLanguage = () => {
         setLanguageData([...languageData, { language: '', level: 0 }]);
     };
-
-    console.log(languageData);
 
     return (
         <section className='w-full'>
