@@ -1,13 +1,10 @@
-import { useState } from 'react';
-
-import { useLanguagesStore } from '@/store/useLanguagesStore';
 import languages from '@/utils/constants/language-list';
-import AddIcon from '@mui/icons-material/Add';
-import { Button } from '@mui/material';
-import Autocomplete from '@mui/material/Autocomplete';
-import Box from '@mui/material/Box';
-import Slider from '@mui/material/Slider';
-import TextField from '@mui/material/TextField';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Add, Delete } from '@mui/icons-material';
+import { Autocomplete, Box, Button, IconButton, Slider, TextField } from '@mui/material';
+
+import { LanguageFormType, languageFormSchema } from './languages-form-schema';
+import { useFieldArray, useForm } from 'react-hook-form';
 
 const languageLevels = [
     { value: 0, label: 'Beginner' },
@@ -22,68 +19,105 @@ function valuetext(value: number) {
 }
 
 export default function LanguagesForm() {
-    const [languageData, setLanguageData] = useState<{ language: string; level: number }[]>([
-        { language: '', level: 0 }
-    ]);
+    const {
+        control,
+        handleSubmit,
+        register,
+        setValue,
+        watch,
+        formState: { errors }
+    } = useForm<LanguageFormType>({
+        resolver: zodResolver(languageFormSchema),
+        defaultValues: {
+            languages: [
+                {
+                    language: '',
+                    level: 0
+                }
+            ]
+        }
+    });
 
-    const { addLanguage } = useLanguagesStore();
-    const [isNewLanguage, setIsNewLanguage] = useState(false);
+    const { fields, append, remove } = useFieldArray({
+        control,
+        name: 'languages'
+    });
 
-    const handleLanguageChange = (index: number, newValue: string) => {
-        const updatedData = [...languageData];
-        updatedData[index].language = newValue;
-        setLanguageData(updatedData);
-        setIsNewLanguage(true);
+    const languageValues = watch('languages');
 
-        console.log(newValue);
-    };
-
-    const handleLevelChange = (index: number, newValue: number) => {
-        const updatedData = [...languageData];
-        updatedData[index].level = newValue;
-        setLanguageData(updatedData);
-    };
-
-    const addNewLanguage = () => {
-        setLanguageData([...languageData, { language: '', level: 0 }]);
+    const onSubmit = (data: LanguageFormType) => {
+        console.log('Form Data:', data);
     };
 
     return (
-        <section className='w-full'>
-            <Box className='flex w-full flex-col gap-4' component='form' noValidate autoComplete='off'>
-                {languageData.map((entry, index) => (
-                    <Box key={index} className='flex w-full flex-col gap-5'>
+        <form onSubmit={handleSubmit(onSubmit)} className='flex w-full flex-col gap-4'>
+            {fields.map((field, index) => (
+                <Box key={field.id} className='flex w-full flex-row items-center justify-between gap-5'>
+                    <Box className='flex w-2/3 flex-col gap-4'>
                         <Autocomplete
                             options={languages}
-                            value={entry.language}
-                            onChange={(event, newValue) => handleLanguageChange(index, newValue || '')}
-                            renderInput={(params) => <TextField {...params} label='Language' variant='outlined' />}
+                            value={languageValues[index]?.language || ''}
+                            onChange={(event, newValue) => {
+                                setValue(`languages.${index}.language`, newValue ?? '');
+                            }}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    label='Language'
+                                    variant='outlined'
+                                    {...register(`languages.${index}.language`)}
+                                    error={!!errors.languages?.[index]?.language}
+                                    helperText={errors.languages?.[index]?.language?.message}
+                                />
+                            )}
                             style={{ width: 300 }}
                         />
 
-                        <div className='w-2/3 pl-8'>
+                        <Box className='pl-8'>
                             <Slider
                                 aria-label='Language Level'
-                                value={entry.level}
+                                value={languageValues[index]?.level || 0}
+                                onChange={(event, newValue) => {
+                                    const numericValue = Array.isArray(newValue) ? newValue[0] : newValue;
+                                    setValue(`languages.${index}.level`, numericValue);
+                                }}
                                 getAriaValueText={valuetext}
                                 step={null}
                                 marks={languageLevels}
-                                onChange={(e, newValue) => handleLevelChange(index, newValue as number)}
-                                disabled={!isNewLanguage}
+                                min={0}
+                                max={100}
                             />
-                        </div>
+                            {errors.languages?.[index]?.level && (
+                                <span className='text-red-600'>{errors.languages[index].level?.message}</span>
+                            )}
+                        </Box>
                     </Box>
-                ))}
 
+                    {index > 0 && (
+                        <IconButton
+                            onClick={() => remove(index)}
+                            color='error'
+                            aria-label='delete'
+                            className='h-fit p-3'>
+                            <Delete />
+                        </IconButton>
+                    )}
+                </Box>
+            ))}
+
+            <Box className='mt-8 flex gap-2'>
                 <Button
                     sx={{ width: 180 }}
                     variant='outlined'
-                    startIcon={<AddIcon />}
-                    onClick={addNewLanguage}
-                    disabled={!isNewLanguage}>
-                    Add Language
+                    startIcon={<Add />}
+                    onClick={() => append({ language: '', level: 0 })}>
+                    Add More
+                </Button>
+
+                <Button variant='contained' type='submit'>
+                    Submit
                 </Button>
             </Box>
-        </section>
+        </form>
     );
 }

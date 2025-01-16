@@ -1,14 +1,11 @@
-import React, { useState } from 'react';
-
 import { zodResolver } from '@hookform/resolvers/zod';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Box, Button, MenuItem, TextField, Typography } from '@mui/material';
-import IconButton from '@mui/material/IconButton';
+import { Box, Button, MenuItem, TextField } from '@mui/material';
 
 import { EducationFormType, educationFormSchema } from './educations-form-schema';
 // eslint-disable-next-line import/named
-import { FieldValues, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
+import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 
 const degrees = ['High School', 'Bachelor', 'Master', 'PhD'];
 
@@ -96,6 +93,7 @@ export default function EducationsForm() {
                         <Button
                             type='button'
                             startIcon={<DeleteIcon />}
+                            onClick={() => remove(index)}
                             variant='outlined'
                             color='error'
                             aria-label='delete'
