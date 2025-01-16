@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const DetailsFormSchema = z.object({
+export const detailsFormSchema = z.object({
     name: z.string().min(1, 'Name is required'),
     lastName: z.string().min(1, 'Last name is required'),
     email: z.string().email('Invalid email address'),
@@ -18,4 +18,4 @@ export const DetailsFormSchema = z.object({
         .optional()
 });
 
-export type DetailsFormType = z.infer<typeof DetailsFormSchema>;
+export type DetailsFormType = z.infer<typeof detailsFormSchema>;

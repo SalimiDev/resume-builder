@@ -8,19 +8,18 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
 
-import { DetailsFormSchema, DetailsFormType } from './details-form-schema';
+import { DetailsFormType, detailsFormSchema } from './details-form-schema';
 // eslint-disable-next-line import/named
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 
 export default function DetailsForm() {
-    const [additionalFields, setAdditionalFields] = useState<{ id: number; fieldName: string }[]>([]);
     const {
         register,
         handleSubmit,
         control,
         formState: { errors }
     } = useForm<DetailsFormType>({
-        resolver: zodResolver(DetailsFormSchema),
+        resolver: zodResolver(detailsFormSchema),
         defaultValues: {
             additionalFields: []
         }
@@ -37,7 +36,7 @@ export default function DetailsForm() {
 
     //bg-white shadow-md
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-4 rounded-lg p-6'>
+        <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-4 rounded-lg'>
             <Box className='flex gap-2 *:w-1/2'>
                 <TextField
                     label='Name'
