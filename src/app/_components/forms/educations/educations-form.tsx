@@ -81,7 +81,7 @@ export default function EducationsForm() {
 
                         <TextField
                             label='Graduation Date'
-                            type='date'
+                            type='month'
                             InputLabelProps={{ shrink: true }}
                             error={!!errors.education?.[index]?.graduationDate}
                             helperText={errors.education?.[index]?.graduationDate?.message}

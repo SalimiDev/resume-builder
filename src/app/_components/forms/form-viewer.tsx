@@ -25,14 +25,14 @@ export default function FormViewer({ step }: FormViewerProps) {
     const currentFormData = resumeSteps.filter((data) => data.key === step);
 
     return step ? (
-        <section className='flex flex-col gap-3 p-5'>
+        <section className='flex flex-col gap-3 p-6'>
             {currentFormData.map((form) => (
                 <div key={form.key}>
                     <header className='mb-3 border-b border-base-content pb-3'>
-                        <h1 className='text-4xl font-semibold'>{form.title}</h1>
+                        <h1 className='text-3xl font-bold text-text-dark'>{form.title}</h1>
                     </header>
-                    <div className='flex flex-col gap-6 px-4 py-2'>
-                        <h4 className='text-2xl text-text-dark'>{form.description}</h4>
+                    <div className='flex flex-col gap-6 py-2'>
+                        <h4 className='text-xl font-semibold text-text-dark'>{form.description}</h4>
                         <Component />
                     </div>
                 </div>

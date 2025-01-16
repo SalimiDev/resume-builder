@@ -34,9 +34,10 @@ export default function DetailsForm() {
         console.log('Form Submitted:', data);
     };
 
-    //bg-white shadow-md
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-4 rounded-lg'>
+        <form
+            onSubmit={handleSubmit(onSubmit)}
+            className='mb-6 flex flex-col gap-4 rounded-lg border bg-white p-4 shadow-md'>
             <Box className='flex gap-2 *:w-1/2'>
                 <TextField
                     label='Name'
@@ -118,16 +119,18 @@ export default function DetailsForm() {
             ))}
 
             {/* دکمه اضافه کردن فیلد */}
-            <Button
-                startIcon={<AddIcon />}
-                variant='outlined'
-                onClick={() => append({ id: fields.length + 1, value: '' })}>
-                Add More
-            </Button>
+            <div className='flex gap-4'>
+                <Button
+                    startIcon={<AddIcon />}
+                    variant='outlined'
+                    onClick={() => append({ id: fields.length + 1, value: '' })}>
+                    Add More
+                </Button>
 
-            <Button variant='contained' type='submit'>
-                Submit
-            </Button>
+                <Button variant='contained' type='submit'>
+                    Submit
+                </Button>
+            </div>
         </form>
     );
 }
