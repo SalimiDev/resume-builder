@@ -1,42 +1,18 @@
+'use client';
+
+import { LanguageFormType } from '@/app/_components/forms/languages/languages-form-schema';
+
 import { create } from 'zustand';
 
-type LanguageData = {
-    language: string;
-    level: number;
-};
+interface LanguagesStore {
+    languagesStore: LanguageFormType;
+    setLanguagesStore: (data: LanguageFormType) => void;
+}
 
-type LanguagesState = {
-    languages: LanguageData[];
-    addLanguage: (language: string, level: number) => void;
-    updateLanguage: (index: number, newLanguage: string) => void;
-    updateLevel: (index: number, newLevel: number) => void;
-    removeLanguage: (index: number) => void;
-    resetLanguages: () => void;
-};
-
-export const useLanguagesStore = create<LanguagesState>((set) => ({
-    languages: [],
-    addLanguage: (language, level) =>
-        set((state) => ({
-            languages: [...state.languages, { language, level }]
-        })),
-    updateLanguage: (index, newLanguage) =>
-        set((state) => {
-            const updatedLanguages = [...state.languages];
-            updatedLanguages[index].language = newLanguage;
-
-            return { languages: updatedLanguages };
-        }),
-    updateLevel: (index, newLevel) =>
-        set((state) => {
-            const updatedLanguages = [...state.languages];
-            updatedLanguages[index].level = newLevel;
-
-            return { languages: updatedLanguages };
-        }),
-    removeLanguage: (index) =>
-        set((state) => ({
-            languages: state.languages.filter((_, i) => i !== index)
-        })),
-    resetLanguages: () => set({ languages: [] })
+export const useLanguagesStore = create<LanguagesStore>((set) => ({
+    languagesStore: {
+        languages: [],
+        level: 0
+    },
+    setLanguagesStore: (data) => set(() => ({ languagesStore: data }))
 }));

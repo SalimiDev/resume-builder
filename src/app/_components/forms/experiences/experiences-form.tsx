@@ -2,6 +2,7 @@
 
 import dynamic from 'next/dynamic';
 
+import { useExperiencesStore } from '@/store/useExperiencesStore';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Add, Delete } from '@mui/icons-material';
 import { Button, IconButton, TextField } from '@mui/material';
@@ -49,8 +50,11 @@ const ExperiencesForm = () => {
             !field.responsibilities
     );
 
+    const { setExperiencesStore, experiencesStore } = useExperiencesStore();
+    console.log(experiencesStore);
     const onSubmit = (data: ExperienceFormType) => {
         console.log('Form Data:', data);
+        setExperiencesStore(data);
     };
 
     return (

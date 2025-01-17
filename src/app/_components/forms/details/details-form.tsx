@@ -1,5 +1,4 @@
-import { useState } from 'react';
-
+import { useDetailsStore } from '@/store/useDetailsStore';
 import { zodResolver } from '@hookform/resolvers/zod';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -30,8 +29,11 @@ export default function DetailsForm() {
         name: 'additionalFields'
     });
 
+    const { setDetailsStore, detailsStore } = useDetailsStore();
+    console.log(detailsStore);
     const onSubmit: SubmitHandler<DetailsFormType> = (data) => {
         console.log('Form Submitted:', data);
+        setDetailsStore(data);
     };
 
     return (

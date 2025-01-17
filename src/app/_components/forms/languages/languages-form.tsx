@@ -1,3 +1,4 @@
+import { useLanguagesStore } from '@/store/useLanguagesStore';
 import languages from '@/utils/constants/language-list';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Add, Delete } from '@mui/icons-material';
@@ -45,8 +46,11 @@ export default function LanguagesForm() {
 
     const languageValues = watch('languages');
 
+    const { setLanguagesStore, languagesStore } = useLanguagesStore();
+    console.log(languagesStore);
     const onSubmit = (data: LanguageFormType) => {
         console.log('Form Data:', data);
+        setLanguagesStore(data);
     };
 
     return (

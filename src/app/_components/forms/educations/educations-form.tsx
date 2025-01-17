@@ -1,3 +1,4 @@
+import { useEducationStore } from '@/store/useEducationStore';
 import { zodResolver } from '@hookform/resolvers/zod';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -41,8 +42,11 @@ export default function EducationsForm() {
         (field) => !field.degree || !field.schoolName || !field.schoolLocation || !field.graduationDate
     );
 
+    const { setEducationStore, educationStore } = useEducationStore();
+    console.log(educationStore);
     const onSubmit: SubmitHandler<EducationFormType> = (data) => {
         console.log('Submitted Data:', data);
+        setEducationStore(data);
     };
 
     return (

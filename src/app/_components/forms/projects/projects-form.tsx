@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 import dynamic from 'next/dynamic';
 
+import { useProjectsStore } from '@/store/useProjectsStore';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Add, Delete } from '@mui/icons-material';
 import { Button, IconButton, TextField } from '@mui/material';
@@ -52,8 +53,11 @@ export default function ProjectsForm() {
         name: 'projects'
     });
 
+    const { setProjectsStore, ProjectsStore } = useProjectsStore();
+    console.log(ProjectsStore);
     const onSubmit = (data: ProjectsFormType) => {
         console.log('Form data:', data);
+        setProjectsStore(data);
     };
 
     const projectsValues = watch('projects');

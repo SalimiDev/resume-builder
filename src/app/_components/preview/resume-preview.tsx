@@ -4,6 +4,7 @@ import Image from 'next/image';
 
 import { user_placeholder1 } from '@/assets/images';
 import { useResumeDataStore } from '@/store/useResumeDataStore';
+import { useSkillsStore } from '@/store/useSkillsStore';
 import { AlternateEmail, GitHub, LocationOn, OpenInNew, Phone } from '@mui/icons-material';
 
 type ResumePreviewProps = {
@@ -12,6 +13,7 @@ type ResumePreviewProps = {
 
 export default function ResumePreview({ scale }: ResumePreviewProps) {
     const { resumeData } = useResumeDataStore();
+    const { skillsStore } = useSkillsStore();
 
     return (
         <div
@@ -174,7 +176,7 @@ export default function ResumePreview({ scale }: ResumePreviewProps) {
                     <hr className='border' />
 
                     <ul className='flex flex-wrap gap-2 text-sm'>
-                        {resumeData.skills.map((skill, index) => (
+                        {skillsStore.map((skill, index) => (
                             <li key={index} className=''>
                                 {skill}.
                             </li>
