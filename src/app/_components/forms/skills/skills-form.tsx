@@ -11,41 +11,39 @@ import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 
 import { SkillsFormType, skillsFormSchema } from './skills-form-schema';
-// eslint-disable-next-line import/named
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 
 export default function SkillsForm() {
+    const { setSkillsStore } = useSkillsStore();
+    const [skillInput, setSkillInput] = useState('');
     const [skills, setSkills] = useState<string[]>([]);
+
     const {
-        register,
-        watch,
         handleSubmit,
         trigger,
-        reset,
-        setFocus,
         formState: { errors }
     } = useForm<SkillsFormType>({
         resolver: zodResolver(skillsFormSchema),
         defaultValues: {
-            skill: ''
+            skills: []
         }
     });
 
-    const addSkill = (skill: string) => {
-        if (!skills.includes(skill)) {
-            setSkills((prev: string[]) => [...prev, skill]);
+    const addSkill = async () => {
+        const isValid = await trigger();
+        if (isValid && skillInput.trim() && !skills.includes(skillInput.trim())) {
+            setSkills((prev) => [...prev, skillInput.trim()]);
+            setSkillInput('');
         }
     };
 
     const handleDelete = (skill: string) => {
-        setSkills((prev: string[]) => prev.filter((item: string) => item !== skill));
+        setSkills((prev) => prev.filter((item) => item !== skill));
     };
 
-    const { setSkillsStore, skillsStore } = useSkillsStore();
-    console.log(skillsStore);
-    const onSubmit: SubmitHandler<SkillsFormType> = (data) => {
-        console.log('Form Submitted:', data);
+    const onSubmit = () => {
         setSkillsStore(skills);
+        console.log('Final Skills Submitted:', skills);
     };
 
     return (
@@ -57,18 +55,14 @@ export default function SkillsForm() {
                     id='outlined-basic'
                     label='Skills'
                     variant='outlined'
-                    {...register('skill')}
-                    error={!!errors.skill}
-                    helperText={errors.skill && errors.skill.message}
-                    onKeyDown={async (e) => {
+                    value={skillInput}
+                    onChange={(e) => setSkillInput(e.target.value)}
+                    error={!!errors.skills}
+                    helperText={errors.skills?.message?.toString()}
+                    onKeyDown={(e) => {
                         if (e.key === 'Enter') {
                             e.preventDefault();
-                            const isValid = await trigger('skill');
-                            if (isValid) {
-                                const currentSkill = watch('skill');
-                                addSkill(currentSkill);
-                                reset();
-                            }
+                            addSkill();
                         }
                     }}
                 />

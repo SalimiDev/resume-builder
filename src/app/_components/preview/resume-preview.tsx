@@ -9,6 +9,7 @@ import { GitHub, OpenInNew } from '@mui/icons-material';
 
 //resume-cards
 import DetailCard from '../resume-templates/elegant/detail-card';
+import SkillCard from '../resume-templates/elegant/skill-card';
 
 type ResumePreviewProps = {
     scale: number;
@@ -18,6 +19,8 @@ export default function ResumePreview({ scale }: ResumePreviewProps) {
     const { detailsStore } = useDetailsStore();
 
     const { skillsStore } = useSkillsStore();
+
+    console.log(skillsStore);
 
     return (
         <div
@@ -144,18 +147,8 @@ export default function ResumePreview({ scale }: ResumePreviewProps) {
                     </p>
                 </div>
 
-                <div className='flex w-full flex-col gap-2'>
-                    <h2 className='text-lg font-semibold'>SKILLS</h2>
-                    <hr className='border' />
-
-                    <ul className='flex flex-wrap gap-2 text-sm'>
-                        {skillsStore.map((skill, index) => (
-                            <li key={index} className=''>
-                                {skill}.
-                            </li>
-                        ))}
-                    </ul>
-                </div>
+                {/* **********SKILLS**********   */}
+                <SkillCard skills={skillsStore} />
 
                 <div className='flex w-full flex-col gap-2'>
                     <h2 className='text-lg font-semibold'>LANGUAGES</h2>
