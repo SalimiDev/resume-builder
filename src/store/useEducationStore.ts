@@ -3,12 +3,12 @@ import { EducationFormType } from '@/app/_components/forms/educations/educations
 import { create } from 'zustand';
 
 interface EducationState {
-    educationStore: EducationFormType | null;
+    educationStore: EducationFormType;
     setEducationStore: (data: EducationFormType) => void;
 }
 
 export const useEducationStore = create<EducationState>((set) => ({
-    educationStore: null,
+    educationStore: { education: [] },
     setEducationStore: (data) => {
         set({ educationStore: data });
     }

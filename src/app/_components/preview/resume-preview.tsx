@@ -4,11 +4,13 @@ import Image from 'next/image';
 
 import { user_placeholder1 } from '@/assets/images';
 import { useDetailsStore } from '@/store/useDetailsStore';
+import { useEducationStore } from '@/store/useEducationStore';
 import { useSkillsStore } from '@/store/useSkillsStore';
 import { GitHub, OpenInNew } from '@mui/icons-material';
 
 //resume-cards
 import DetailCard from '../resume-templates/elegant/detail-card';
+import EducationCard from '../resume-templates/elegant/education-card';
 import SkillCard from '../resume-templates/elegant/skill-card';
 
 type ResumePreviewProps = {
@@ -19,6 +21,7 @@ export default function ResumePreview({ scale }: ResumePreviewProps) {
     const { detailsStore } = useDetailsStore();
 
     const { skillsStore } = useSkillsStore();
+    const { educationStore } = useEducationStore();
 
     console.log(skillsStore);
 
@@ -112,22 +115,9 @@ export default function ResumePreview({ scale }: ResumePreviewProps) {
                     </div>
                 </div>
 
-                {/* =========Experience ========== */}
-                <div className='mt-2 flex w-full flex-col gap-2'>
-                    <h2 className='text-lg font-semibold'>EDUCATION</h2>
-                    <hr className='border text-base-content' />
-
-                    <div className='flex justify-between'>
-                        <div>
-                            <h3 className='font-semibold text-text-dark'>Master&apos;s degree</h3>
-                            <h3 className='font-semibold text-primary-content'>Islamic Azad University</h3>
-                        </div>
-                        <div className='text-end text-text-dark'>
-                            <span>06/2023 - Present</span>
-                            <p>Tehran</p>
-                        </div>
-                    </div>
-                </div>
+                {/* =========EDUCATION ========== */}
+                <EducationCard education={educationStore.education} />
+                {/* <EducationCard education={educationStore?.education ?? []} /> */}
             </section>
 
             {/* =========Section Right ========== */}
