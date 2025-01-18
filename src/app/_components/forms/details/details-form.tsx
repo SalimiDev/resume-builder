@@ -2,6 +2,7 @@ import { useDetailsStore } from '@/store/useDetailsStore';
 import { zodResolver } from '@hookform/resolvers/zod';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
+import LinkIcon from '@mui/icons-material/Link';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
@@ -16,6 +17,8 @@ export default function DetailsForm() {
         register,
         handleSubmit,
         control,
+        setValue,
+        watch,
         formState: { errors }
     } = useForm<DetailsFormType>({
         resolver: zodResolver(detailsFormSchema),
@@ -60,6 +63,24 @@ export default function DetailsForm() {
 
             <Box className='flex gap-2 *:w-1/2'>
                 <TextField
+                    label='Role'
+                    variant='outlined'
+                    {...register('role')}
+                    error={!!errors.role}
+                    helperText={errors.role?.message}
+                />
+
+                <TextField
+                    label='Location'
+                    variant='outlined'
+                    {...register('location')}
+                    error={!!errors.location}
+                    helperText={errors.location?.message}
+                />
+            </Box>
+
+            <Box className='flex gap-2 *:w-1/2'>
+                <TextField
                     label='Email'
                     variant='outlined'
                     {...register('email')}
@@ -75,57 +96,40 @@ export default function DetailsForm() {
                 />
             </Box>
 
-            <Box className='flex gap-2 *:w-1/2'>
-                <TextField
-                    label='Location'
-                    variant='outlined'
-                    {...register('location')}
-                    error={!!errors.location}
-                    helperText={errors.location?.message}
-                />
-
-                <TextField
-                    label='GitHub'
-                    variant='outlined'
-                    {...register('github')}
-                    error={!!errors.github}
-                    helperText={errors.github?.message}
-                />
-            </Box>
-
-            <TextField
-                label='Summary'
-                variant='outlined'
-                multiline
-                rows={8}
-                {...register('summary')}
-                error={!!errors.summary}
-                helperText={errors.summary?.message}
-            />
-
             {/* مدیریت فیلدهای اضافی */}
-            {fields.map((field, index) => (
-                <Box key={field.id} className='flex items-center gap-2'>
-                    <TextField
-                        className='w-1/2'
-                        label={`Additional Field ${index + 1}`}
-                        variant='outlined'
-                        {...register(`additionalFields.${index}.value` as const)}
-                        error={!!errors.additionalFields && !!errors.additionalFields[index]?.value}
-                        helperText={errors.additionalFields && errors.additionalFields[index]?.value?.message}
-                    />
-                    <IconButton color='error' onClick={() => remove(index)}>
-                        <DeleteIcon />
-                    </IconButton>
-                </Box>
-            ))}
+            {fields.map((field, index) => {
+                const isLink = watch(`additionalFields.${index}.isLink`);
+
+                return (
+                    <Box key={field.id} className='flex items-center gap-2'>
+                        <TextField
+                            className='w-1/2'
+                            label={`Additional Field ${index + 1}`}
+                            variant='outlined'
+                            {...register(`additionalFields.${index}.value` as const)}
+                            error={!!errors.additionalFields?.[index]?.value}
+                            helperText={errors.additionalFields?.[index]?.value?.message}
+                        />
+
+                        <IconButton
+                            color={isLink ? 'primary' : 'default'}
+                            onClick={() => setValue(`additionalFields.${index}.isLink`, !isLink)}>
+                            <LinkIcon />
+                        </IconButton>
+
+                        <IconButton color='error' onClick={() => remove(index)}>
+                            <DeleteIcon />
+                        </IconButton>
+                    </Box>
+                );
+            })}
 
             {/* دکمه اضافه کردن فیلد */}
             <div className='flex gap-4'>
                 <Button
                     startIcon={<AddIcon />}
                     variant='outlined'
-                    onClick={() => append({ id: fields.length + 1, value: '' })}>
+                    onClick={() => append({ id: fields.length + 1, value: '', isLink: false })}>
                     Add More
                 </Button>
 

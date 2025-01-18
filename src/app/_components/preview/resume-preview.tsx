@@ -3,16 +3,20 @@
 import Image from 'next/image';
 
 import { user_placeholder1 } from '@/assets/images';
-import { useResumeDataStore } from '@/store/useResumeDataStore';
+import { useDetailsStore } from '@/store/useDetailsStore';
 import { useSkillsStore } from '@/store/useSkillsStore';
-import { AlternateEmail, GitHub, LocationOn, OpenInNew, Phone } from '@mui/icons-material';
+import { GitHub, OpenInNew } from '@mui/icons-material';
+
+//resume-cards
+import DetailCard from '../resume-templates/elegant/detail-card';
 
 type ResumePreviewProps = {
     scale: number;
 };
 
 export default function ResumePreview({ scale }: ResumePreviewProps) {
-    const { resumeData } = useResumeDataStore();
+    const { detailsStore } = useDetailsStore();
+
     const { skillsStore } = useSkillsStore();
 
     return (
@@ -22,38 +26,7 @@ export default function ResumePreview({ scale }: ResumePreviewProps) {
             {/* =========Section Left ========== */}
             <section className='flex w-2/3 flex-col gap-8 pl-12 pr-6 pt-16'>
                 {/* =========details ========== */}
-                <div className='flex flex-col gap-2'>
-                    <div>
-                        <h1 className='text-3xl font-bold'>MEHDI SALIMI</h1>
-                        <h3 className='text-lg text-primary-content'>Frontend Developer</h3>
-                    </div>
-
-                    <div className='text-sm'>
-                        <div className='flex gap-4 *:flex *:items-center *:gap-1'>
-                            <div>
-                                <Phone fontSize='small' className='text-base-25' />
-                                <a href='tel:+989370938781'>+989370938781</a>
-                            </div>
-
-                            <div>
-                                <AlternateEmail fontSize='small' className='text-base-25' />
-                                <a href='mailto:salimi.devop@gmail.com'>Salimi.devop@gmail.com</a>
-                            </div>
-                        </div>
-
-                        <div className='flex gap-4 *:flex *:items-center *:gap-1'>
-                            <div>
-                                <GitHub fontSize='small' className='text-base-25' />
-                                <a href='https://github.com/SalimiDev'>https://github.com/SalimiDev</a>
-                            </div>
-                            <div>
-                                <LocationOn fontSize='small' className='text-base-25' />
-                                <p>Tehran</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+                <DetailCard {...detailsStore} />
                 {/* =========Experience ========== */}
                 <div className='mt-2 flex w-full flex-col gap-2'>
                     <h2 className='text-lg font-semibold'>EXPERIENCE</h2>
