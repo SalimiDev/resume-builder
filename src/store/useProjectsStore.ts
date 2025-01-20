@@ -5,11 +5,11 @@ import { ProjectsFormType } from '@/app/_components/forms/projects/projects-form
 import { create } from 'zustand';
 
 interface ProjectState {
-    ProjectsStore: ProjectsFormType | null;
+    ProjectsStore: ProjectsFormType;
     setProjectsStore: (data: ProjectsFormType) => void;
 }
 
 export const useProjectsStore = create<ProjectState>((set) => ({
-    ProjectsStore: null,
+    ProjectsStore: { projects: [] },
     setProjectsStore: (data) => set({ ProjectsStore: data })
 }));

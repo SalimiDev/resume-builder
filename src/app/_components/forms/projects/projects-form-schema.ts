@@ -14,7 +14,7 @@ const projectSchema = z.object({
 });
 
 export const ProjectsFormSchema = z.object({
-    projects: z.array(projectSchema).nonempty()
+    projects: z.array(projectSchema)
 });
 
 export type ProjectsFormType = z.infer<typeof ProjectsFormSchema>;
