@@ -9,6 +9,12 @@ export const resumeSteps: ResumeStepsType[] = [
         icon: ManageAccounts
     },
     {
+        title: 'Summary',
+        description: 'Write about yourself..',
+        key: 'summary',
+        icon: ManageAccounts
+    },
+    {
         title: 'Skills',
         description: 'Highlight your skills and expertise.',
         key: 'skills',

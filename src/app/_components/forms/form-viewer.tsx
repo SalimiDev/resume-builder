@@ -6,14 +6,16 @@ import ExperiencesForm from './experiences/experiences-form';
 import LanguagesForm from './languages/languages-form';
 import ProjectsForm from './projects/projects-form';
 import SkillsForm from './skills/skills-form';
+import SummaryForm from './summary/summary-form';
 
 interface FormViewerProps {
     step: string;
 }
 
 const formMap: Record<string, React.FC> = {
-    educations: EducationsForm,
+    summary: SummaryForm,
     experiences: ExperiencesForm,
+    educations: EducationsForm,
     languages: LanguagesForm,
     projects: ProjectsForm,
     details: DetailsForm,
