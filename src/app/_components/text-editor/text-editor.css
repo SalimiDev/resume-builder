@@ -1,0 +1,104 @@
+.quill-content h1 {
+    font-size: 28px !important;
+    font-weight: bold !important;
+    color: #222 !important;
+}
+
+.quill-content h2 {
+    font-size: 24px !important;
+    font-weight: bold !important;
+    color: #333 !important;
+}
+
+.quill-content h3 {
+    font-size: 20px !important;
+    font-weight: bold !important;
+    color: #444 !important;
+}
+
+.quill-content p {
+    font-size: 16px !important;
+    color: #555 !important;
+}
+
+.quill-content strong {
+    font-weight: bold !important;
+    color: black !important;
+}
+
+.quill-content em {
+    font-style: italic !important;
+}
+
+.quill-content u {
+    text-decoration: underline !important;
+}
+
+.quill-content a {
+    color: blue !important;
+    text-decoration: underline !important;
+    font-weight: bold !important;
+}
+
+.quill-content ul {
+    list-style-type: disc !important;
+    padding-left: 25px !important;
+}
+
+.quill-content ol {
+    list-style-type: decimal !important;
+    padding-left: 25px !important;
+}
+
+.quill-content li {
+    margin-bottom: 5px !important;
+    font-size: 16px !important;
+    color: #444 !important;
+}
+
+.ql-toolbar {
+    background: #f9f9f9 !important;
+    border: 1px solid #ccc !important;
+    border-radius: 6px !important;
+    padding: 8px !important;
+}
+
+.ql-toolbar button {
+    background: none !important;
+    border: none !important;
+    padding: 5px !important;
+    cursor: pointer !important;
+    font-size: 14px !important;
+    font-weight: bold !important;
+    transition: all 0.2s ease-in-out !important;
+}
+
+.ql-toolbar button:hover {
+    background: #e9ecef !important;
+    border-radius: 4px !important;
+}
+
+.ql-editor {
+    min-height: 150px !important;
+    padding: 15px !important;
+    border: 1px solid #ddd !important;
+    border-radius: 6px !important;
+    background-color: white !important;
+    font-size: 16px !important;
+    line-height: 1.6 !important;
+    color: #222 !important;
+}
+
+.quill-content blockquote {
+    font-style: italic !important;
+    border-left: 4px solid #999 !important;
+    padding-left: 10px !important;
+    color: #666 !important;
+}
+
+.quill-content pre {
+    background: #f4f4f4 !important;
+    padding: 10px !important;
+    border-radius: 5px !important;
+    font-family: 'Courier New', monospace !important;
+}

@@ -9,16 +9,7 @@ type ExperiencesStore = {
 
 export const useExperiencesStore = create<ExperiencesStore>((set) => ({
     experiencesStore: {
-        experiences: [
-            {
-                employer: '',
-                role: '',
-                location: '',
-                startDate: '',
-                endDate: '',
-                responsibilities: ''
-            }
-        ]
+        experiences: []
     },
 
     setExperiencesStore: (data) => set({ experiencesStore: data })

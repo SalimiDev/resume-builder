@@ -6,7 +6,7 @@ export const experienceSchema = z.object({
     location: z.string().min(1, 'Location is required'),
     startDate: z.string().regex(/^(0[1-9]|1[0-2])\/\d{4}$/, 'Invalid date (MM/YYYY)'),
     endDate: z.string().optional().or(z.literal('Present')),
-    responsibilities: z.string().min(1, 'Responsibilities are required')
+    description: z.string().optional()
 });
 
 export const experienceFormSchema = z.object({

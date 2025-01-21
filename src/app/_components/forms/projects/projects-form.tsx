@@ -2,26 +2,14 @@
 
 import { useState } from 'react';
 
-import dynamic from 'next/dynamic';
-
 import { useProjectsStore } from '@/store/useProjectsStore';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Add, Delete } from '@mui/icons-material';
 import { Button, IconButton, TextField } from '@mui/material';
-import { styled } from '@mui/material/styles';
 
+import { TextEditor } from '../../text-editor';
 import { ProjectsFormSchema, ProjectsFormType } from './projects-form-schema';
-import { useFieldArray, useForm } from 'react-hook-form';
-import 'react-quill/dist/quill.snow.css';
-
-const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
-
-//Quill Styles
-const QuillContainer = styled('div')({
-    '& .ql-editor': {
-        minHeight: '100px'
-    }
-});
+import { Controller, useFieldArray, useForm } from 'react-hook-form';
 
 export default function ProjectsForm() {
     const defaultValues: ProjectsFormType = {
@@ -100,17 +88,11 @@ export default function ProjectsForm() {
                         />
                     </div>
 
-                    <QuillContainer className=''>
-                        <ReactQuill
-                            theme='snow'
-                            value={watch(`projects.${projectIndex}.description`)}
-                            onChange={(value) =>
-                                setValue(`projects.${projectIndex}.description`, value, {
-                                    shouldValidate: true
-                                })
-                            }
-                        />
-                    </QuillContainer>
+                    <Controller
+                        name={`projects.${projectIndex}.description`}
+                        control={control}
+                        render={({ field }) => <TextEditor value={field.value} onChange={field.onChange} />}
+                    />
 
                     {errors.projects?.[projectIndex]?.description && (
                         <p className='text-red-500 text-sm'>{errors.projects[projectIndex]?.description?.message}</p>
@@ -174,10 +156,6 @@ function ExternalLinksFieldArray({ register, control, projectIndex }: ExternalLi
         const file = e.target.files?.[0];
         if (file) {
             setFileState((prev) => ({ ...prev, [idx]: file }));
-
-            // setValue(`projects.${projectIndex}.externalLinks.${idx}.icon`, file, {
-            //   shouldValidate: true,
-            // });
         }
     };
 

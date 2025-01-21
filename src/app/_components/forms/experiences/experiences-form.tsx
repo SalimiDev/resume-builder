@@ -1,25 +1,13 @@
 'use client';
 
-import dynamic from 'next/dynamic';
-
 import { useExperiencesStore } from '@/store/useExperiencesStore';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Add, Delete } from '@mui/icons-material';
 import { Button, IconButton, TextField } from '@mui/material';
-import { styled } from '@mui/material/styles';
 
+import { TextEditor } from '../../text-editor';
 import { ExperienceFormType, experienceFormSchema } from './experiences-form-schema';
-import { useFieldArray, useForm } from 'react-hook-form';
-import 'react-quill/dist/quill.snow.css';
-
-const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
-
-//Quill Styles
-const QuillContainer = styled('div')({
-    '& .ql-editor': {
-        minHeight: '100px'
-    }
-});
+import { Controller, useFieldArray, useForm } from 'react-hook-form';
 
 const ExperiencesForm = () => {
     const {
@@ -32,7 +20,7 @@ const ExperiencesForm = () => {
     } = useForm<ExperienceFormType>({
         resolver: zodResolver(experienceFormSchema),
         defaultValues: {
-            experiences: [{ employer: '', role: '', location: '', startDate: '', endDate: '', responsibilities: '' }]
+            experiences: [{ employer: '', role: '', location: '', startDate: '', endDate: '', description: '' }]
         }
     });
 
@@ -47,7 +35,7 @@ const ExperiencesForm = () => {
             !field.location ||
             !field.startDate ||
             !field.endDate ||
-            !field.responsibilities
+            !field.description
     );
 
     const { setExperiencesStore, experiencesStore } = useExperiencesStore();
@@ -60,14 +48,15 @@ const ExperiencesForm = () => {
     return (
         <form onSubmit={handleSubmit(onSubmit)} className=' '>
             {fields.map((field, index) => (
-                <div key={field.id} className='relative mb-6 rounded-lg border bg-white p-4 shadow-md'>
+                <div
+                    key={field.id}
+                    className='relative mb-6 flex flex-col gap-3 rounded-lg border bg-white p-4 shadow-md'>
                     <TextField
                         label='Employer'
                         fullWidth
                         {...register(`experiences.${index}.employer`)}
                         error={!!errors.experiences?.[index]?.employer}
                         helperText={errors.experiences?.[index]?.employer?.message}
-                        className='mb-3'
                     />
 
                     <TextField
@@ -76,7 +65,6 @@ const ExperiencesForm = () => {
                         {...register(`experiences.${index}.role`)}
                         error={!!errors.experiences?.[index]?.role}
                         helperText={errors.experiences?.[index]?.role?.message}
-                        className='mb-3'
                     />
 
                     <TextField
@@ -85,7 +73,6 @@ const ExperiencesForm = () => {
                         {...register(`experiences.${index}.location`)}
                         error={!!errors.experiences?.[index]?.location}
                         helperText={errors.experiences?.[index]?.location?.message}
-                        className='mb-3'
                     />
 
                     <div className='grid grid-cols-2 gap-4'>
@@ -106,16 +93,14 @@ const ExperiencesForm = () => {
                         />
                     </div>
 
-                    <QuillContainer className='mt-3'>
-                        <ReactQuill
-                            theme='snow'
-                            value={watch(`experiences.${index}.responsibilities`)}
-                            onChange={(content) => setValue(`experiences.${index}.responsibilities`, content)}
-                        />
-                    </QuillContainer>
+                    <Controller
+                        name={`experiences.${index}.description`}
+                        control={control}
+                        render={({ field }) => <TextEditor value={field.value} onChange={field.onChange} />}
+                    />
 
-                    {errors.experiences?.[index]?.responsibilities && (
-                        <p className='text-red-500 text-sm'>{errors.experiences[index]?.responsibilities?.message}</p>
+                    {errors.experiences?.[index]?.description && (
+                        <p className='text-red-500 text-sm'>{errors.experiences[index]?.description?.message}</p>
                     )}
 
                     {index > 0 && (
@@ -142,7 +127,7 @@ const ExperiencesForm = () => {
                             location: '',
                             startDate: '',
                             endDate: '',
-                            responsibilities: ''
+                            description: ''
                         })
                     }
                     disabled={isAddMoreDisabled}>
