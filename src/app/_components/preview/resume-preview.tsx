@@ -8,6 +8,7 @@ import { useEducationStore } from '@/store/useEducationStore';
 import { useExperiencesStore } from '@/store/useExperiencesStore';
 import { useProjectsStore } from '@/store/useProjectsStore';
 import { useSkillsStore } from '@/store/useSkillsStore';
+import { useSummaryStore } from '@/store/useSummaryStore';
 
 //resume-cards
 import DetailCard from '../resume-templates/elegant/detail-card';
@@ -15,6 +16,7 @@ import EducationCard from '../resume-templates/elegant/education-card';
 import ExperienceCard from '../resume-templates/elegant/experince-card';
 import ProjectCard from '../resume-templates/elegant/project-card';
 import SkillCard from '../resume-templates/elegant/skill-card';
+import SummaryCard from '../resume-templates/elegant/summary-card';
 
 type ResumePreviewProps = {
     scale: number;
@@ -26,6 +28,8 @@ export default function ResumePreview({ scale }: ResumePreviewProps) {
     const { educationStore } = useEducationStore();
     const { ProjectsStore } = useProjectsStore();
     const { experiencesStore } = useExperiencesStore();
+    const { summaryStore } = useSummaryStore();
+    console.log('🚀 ~ ResumePreview ~ summaryStore:', summaryStore);
 
     console.log(skillsStore);
 
@@ -53,17 +57,9 @@ export default function ResumePreview({ scale }: ResumePreviewProps) {
                 <figure className='flex w-full justify-center'>
                     <Image alt='user' src={user_placeholder1} width={120} />
                 </figure>
+                {/* **********SUMMARY**********   */}
 
-                <div className='flex w-full flex-col gap-2'>
-                    <h2 className='text-lg font-semibold'>SUMMARY</h2>
-                    <hr className='border' />
-                    <p className='text-sm'>
-                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Optio ullam iusto, eaque accusamus
-                        molestiae mollitia quia sit ab maiores laboriosam expedita obcaecati voluptas. Ducimus commodi
-                        nemo a voluptate ad provident, cum, doloribus quae quammaiores laboriosam expedita obcaecati
-                        obcaecati voluptatibus molestias ullam ipsa placeat!
-                    </p>
-                </div>
+                <SummaryCard summary={summaryStore.summary} />
 
                 {/* **********SKILLS**********   */}
                 <SkillCard skills={skillsStore} />

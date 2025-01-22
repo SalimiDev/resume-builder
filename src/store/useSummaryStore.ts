@@ -1,11 +1,13 @@
+import { SummaryFormType } from '@/app/_components/forms/summary/summary-form-schema';
+
 import { create } from 'zustand';
 
 type SummaryState = {
-    summary: string;
-    setSummaryStore: (data: Partial<SummaryState>) => void;
+    summaryStore: SummaryFormType;
+    setSummaryStore: (data: SummaryFormType) => void;
 };
 
 export const useSummaryStore = create<SummaryState>((set) => ({
-    summary: '',
-    setSummaryStore: (data) => set((state) => ({ ...state, ...data }))
+    summaryStore: { summary: '' },
+    setSummaryStore: (data) => set({ summaryStore: data })
 }));

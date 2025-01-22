@@ -35,7 +35,6 @@
 }
 
 .quill-content a {
-    color: blue !important;
     text-decoration: underline !important;
     font-weight: bold !important;
 }
@@ -101,4 +100,37 @@
     padding: 10px !important;
     border-radius: 5px !important;
     font-family: 'Courier New', monospace !important;
+}
+/* /--------------------------------------- */
+
+.quill-sidebar-content {
+    .quill-content h1 {
+        font-size: 28px !important;
+        font-weight: bold !important;
+        color: white !important;
+    }
+
+    .quill-content h2 {
+        font-size: 24px !important;
+        font-weight: bold !important;
+        color: white !important;
+    }
+
+    .quill-content h3 {
+        font-size: 20px !important;
+        font-weight: bold !important;
+        color: white !important;
+    }
+
+    .quill-content p {
+        font-size: 16px !important;
+        color: white !important;
+        text-wrap: wrap !important;
+    }
+
+    .quill-content li {
+        margin-bottom: 5px !important;
+        font-size: 16px !important;
+        color: white !important;
+    }
 }
