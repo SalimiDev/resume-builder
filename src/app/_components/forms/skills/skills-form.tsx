@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useSkillsStore } from '@/store/useSkillsStore';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -13,7 +13,11 @@ import TextField from '@mui/material/TextField';
 import { SkillsFormType, skillsFormSchema } from './skills-form-schema';
 import { useForm } from 'react-hook-form';
 
-export default function SkillsForm() {
+interface SkillsFormProps {
+    setSubmitHandler?: (submitHandler: () => Promise<boolean>) => void;
+}
+
+export default function SkillsForm({ setSubmitHandler }: SkillsFormProps) {
     const { setSkillsStore } = useSkillsStore();
     const [skillInput, setSkillInput] = useState('');
     const [skills, setSkills] = useState<string[]>([]);
@@ -21,9 +25,10 @@ export default function SkillsForm() {
     const {
         handleSubmit,
         trigger,
-        formState: { errors }
+        formState: { errors, isValid }
     } = useForm<SkillsFormType>({
         resolver: zodResolver(skillsFormSchema),
+        mode: 'onBlur',
         defaultValues: {
             skills: []
         }
@@ -41,10 +46,23 @@ export default function SkillsForm() {
         setSkills((prev) => prev.filter((item) => item !== skill));
     };
 
-    const onSubmit = () => {
+    const onSubmit = async (data: SkillsFormType) => {
         setSkillsStore(skills);
-        console.log('Final Skills Submitted:', skills);
+        //TODO FIX THIS
+
+        return true;
     };
+
+    // send the submit handler to the parent component(step-layout)
+    useEffect(() => {
+        if (setSubmitHandler) {
+            setSubmitHandler(async () => {
+                await handleSubmit(onSubmit)();
+
+                return isValid;
+            });
+        }
+    }, [handleSubmit, onSubmit, setSubmitHandler, isValid]);
 
     return (
         <form

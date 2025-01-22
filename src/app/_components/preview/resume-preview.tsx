@@ -52,7 +52,6 @@ export default function ResumePreview({ scale }: ResumePreviewProps) {
 
                 {/* =========EDUCATION ========== */}
                 <EducationCard education={educationStore.education} />
-                {/* <EducationCard education={educationStore?.education ?? []} /> */}
             </section>
 
             {/* =========Section Right ========== */}

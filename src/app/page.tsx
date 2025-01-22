@@ -16,10 +16,10 @@ export default function Home() {
             {/* ستون چپ */}
             <div className='flex h-full w-1/2 flex-col overflow-auto border-r'>
                 <StepperLayout steps={resumeSteps}>
-                    {(activeStep) => {
+                    {(activeStep, setSubmitHandler) => {
                         const currentStepKey = resumeSteps[activeStep].key;
 
-                        return <FormViewer step={currentStepKey} />;
+                        return <FormViewer step={currentStepKey} setSubmitHandler={setSubmitHandler} />;
                     }}
                 </StepperLayout>
             </div>

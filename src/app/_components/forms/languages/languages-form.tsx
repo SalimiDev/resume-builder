@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import { useLanguagesStore } from '@/store/useLanguagesStore';
 import languages from '@/utils/constants/language-list';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -19,14 +21,18 @@ function valuetext(value: number) {
     return `${value}`;
 }
 
-export default function LanguagesForm() {
+interface LanguagesFormProps {
+    setSubmitHandler?: (submitHandler: () => Promise<boolean>) => void;
+}
+
+export default function LanguagesForm({ setSubmitHandler }: LanguagesFormProps) {
     const {
         control,
         handleSubmit,
         register,
         setValue,
         watch,
-        formState: { errors }
+        formState: { errors, isValid }
     } = useForm<LanguageFormType>({
         resolver: zodResolver(languageFormSchema),
         defaultValues: {
@@ -47,11 +53,23 @@ export default function LanguagesForm() {
     const languageValues = watch('languages');
 
     const { setLanguagesStore, languagesStore } = useLanguagesStore();
-    console.log(languagesStore);
-    const onSubmit = (data: LanguageFormType) => {
-        console.log('Form Data:', data);
+
+    const onSubmit = async (data: LanguageFormType) => {
         setLanguagesStore(data);
+
+        return true;
     };
+
+    // send the submit handler to the parent component(step-layout)
+    useEffect(() => {
+        if (setSubmitHandler) {
+            setSubmitHandler(async () => {
+                await handleSubmit(onSubmit)();
+
+                return isValid;
+            });
+        }
+    }, [handleSubmit, onSubmit, setSubmitHandler, isValid]);
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className='flex w-full flex-col gap-4'>

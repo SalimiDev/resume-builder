@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import { useEducationStore } from '@/store/useEducationStore';
 import { zodResolver } from '@hookform/resolvers/zod';
 import AddIcon from '@mui/icons-material/Add';
@@ -10,15 +12,20 @@ import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 
 const degrees = ['High School', 'Bachelor', 'Master', 'PhD'];
 
-export default function EducationsForm() {
+interface EducationsFormProps {
+    setSubmitHandler?: (submitHandler: () => Promise<boolean>) => void;
+}
+
+export default function EducationsForm({ setSubmitHandler }: EducationsFormProps) {
     const {
         control,
         handleSubmit,
         register,
         watch,
-        formState: { errors }
+        formState: { errors, isValid }
     } = useForm<EducationFormType>({
         resolver: zodResolver(educationFormSchema),
+        mode: 'onBlur',
         defaultValues: {
             education: [
                 {
@@ -42,12 +49,24 @@ export default function EducationsForm() {
         (field) => !field.degree || !field.schoolName || !field.schoolLocation || !field.graduationDate
     );
 
-    const { setEducationStore, educationStore } = useEducationStore();
-    console.log(educationStore);
-    const onSubmit: SubmitHandler<EducationFormType> = (data) => {
-        console.log('Submitted Data:', data);
+    const { setEducationStore } = useEducationStore();
+
+    const onSubmit = async (data: EducationFormType) => {
         setEducationStore(data);
+
+        return true;
     };
+
+    // send the submit handler to the parent component(step-layout)
+    useEffect(() => {
+        if (setSubmitHandler) {
+            setSubmitHandler(async () => {
+                await handleSubmit(onSubmit)();
+
+                return isValid;
+            });
+        }
+    }, [handleSubmit, onSubmit, setSubmitHandler, isValid]);
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-8'>

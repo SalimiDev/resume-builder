@@ -10,9 +10,10 @@ import SummaryForm from './summary/summary-form';
 
 interface FormViewerProps {
     step: string;
+    setSubmitHandler: (submitHandler: () => Promise<boolean>) => void;
 }
 
-const formMap: Record<string, React.FC> = {
+const formMap: Record<string, React.FC<{ setSubmitHandler: (submitHandler: () => Promise<boolean>) => void }>> = {
     summary: SummaryForm,
     experiences: ExperiencesForm,
     educations: EducationsForm,
@@ -22,7 +23,8 @@ const formMap: Record<string, React.FC> = {
     skills: SkillsForm
 };
 
-export default function FormViewer({ step }: FormViewerProps) {
+export default function FormViewer({ step, setSubmitHandler }: FormViewerProps) {
+    console.log('🚀 ~ FormViewer ~ setSubmitHandler:', setSubmitHandler);
     const Component = formMap[step];
     const currentFormData = resumeSteps.filter((data) => data.key === step);
 
@@ -35,7 +37,7 @@ export default function FormViewer({ step }: FormViewerProps) {
                     </header>
                     <div className='flex flex-col gap-6 py-2'>
                         <h4 className='text-xl font-semibold text-text-dark'>{form.description}</h4>
-                        <Component />
+                        <Component setSubmitHandler={setSubmitHandler} />
                     </div>
                 </div>
             ))}

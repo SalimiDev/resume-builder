@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import { useSummaryStore } from '@/store/useSummaryStore';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Button from '@mui/material/Button';
@@ -7,22 +9,37 @@ import { SummaryFormType, summaryFormSchema } from './summary-form-schema';
 // eslint-disable-next-line import/named
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 
-export default function SummaryForm() {
+interface SummaryFormProps {
+    setSubmitHandler?: (submitHandler: () => Promise<boolean>) => void;
+}
+
+export default function SummaryForm({ setSubmitHandler }: SummaryFormProps) {
     const {
         register,
         handleSubmit,
         control,
-        formState: { errors }
+        formState: { errors, isValid }
     } = useForm<SummaryFormType>({
-        resolver: zodResolver(summaryFormSchema)
+        resolver: zodResolver(summaryFormSchema),
+        mode: 'onBlur'
     });
 
     const { setSummaryStore } = useSummaryStore();
 
-    const onSubmit: SubmitHandler<SummaryFormType> = (data) => {
-        console.log('Summary Me Submitted:', data);
+    const onSubmit = async (data: SummaryFormType) => {
         setSummaryStore(data);
     };
+
+    // send the submit handler to the parent component(step-layout)
+    useEffect(() => {
+        if (setSubmitHandler) {
+            setSubmitHandler(async () => {
+                await handleSubmit(onSubmit)();
+
+                return isValid;
+            });
+        }
+    }, [handleSubmit, onSubmit, setSubmitHandler, isValid]);
 
     return (
         <form

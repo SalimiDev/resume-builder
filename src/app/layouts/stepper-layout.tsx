@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react';
+import { ReactNode, useRef, useState } from 'react';
 
 import { ResumeStepsType } from '@/types/resume-steps.interface';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
@@ -6,53 +6,56 @@ import { Box, Button, Step, StepButton, StepLabel, Stepper, Typography } from '@
 
 type StepperLayoutProps = {
     steps: ResumeStepsType[];
-    children: (activeStep: number) => ReactNode; // Render Prop
+    children: (activeStep: number, setSubmitHandler: (submitHandler: () => Promise<boolean>) => void) => ReactNode;
 };
 
 const StepperLayout = ({ steps, children }: StepperLayoutProps) => {
     const [activeStep, setActiveStep] = useState(0);
-    const [completed, setCompleted] = useState<{
-        [k: number]: boolean;
-    }>({});
+    const [completed, setCompleted] = useState<{ [k: number]: boolean }>({});
+    const submitHandlerRef = useRef<(() => void) | null>(null);
 
-    const totalSteps = () => {
-        return steps.length;
+    const totalSteps = () => steps.length;
+    const completedSteps = () => Object.keys(completed).length;
+    const isLastStep = () => activeStep === totalSteps() - 1;
+    const allStepsCompleted = () => completedSteps() === totalSteps();
+
+    const setSubmitHandler = (submitHandler: () => boolean | Promise<boolean>) => {
+        submitHandlerRef.current = submitHandler;
     };
 
-    const completedSteps = () => {
-        return Object.keys(completed).length;
-    };
+    const handleNext = async () => {
+        if (submitHandlerRef.current) {
+            const isValid = await submitHandlerRef.current();
+            if (typeof isValid !== 'boolean') {
+                throw new Error('Submit handler must return a boolean value.');
+            }
+            if (!isValid) return;
+        }
 
-    const isLastStep = () => {
-        return activeStep === totalSteps() - 1;
-    };
-
-    const allStepsCompleted = () => {
-        return completedSteps() === totalSteps();
-    };
-
-    const handleNext = () => {
         const newActiveStep =
             isLastStep() && !allStepsCompleted() ? steps.findIndex((step, i) => !(i in completed)) : activeStep + 1;
+
         setActiveStep(newActiveStep);
     };
 
-    const handleBack = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep - 1);
-    };
+    const handleBack = () => setActiveStep((prevActiveStep) => prevActiveStep - 1);
 
-    const handleStep = (step: number) => () => {
-        setActiveStep(step);
-    };
+    const handleStep = (step: number) => () => setActiveStep(step);
 
-    const handleComplete = () => {
+    const handleComplete = async () => {
+        if (submitHandlerRef.current) {
+            const isValid = await submitHandlerRef.current();
+            if (typeof isValid !== 'boolean') {
+                throw new Error('Submit handler must return a boolean value.');
+            }
+            if (!isValid) return;
+        }
         setCompleted({
             ...completed,
             [activeStep]: true
         });
-        handleNext();
+        // handleNext();
     };
-
     const handleReset = () => {
         setActiveStep(0);
         setCompleted({});
@@ -74,8 +77,7 @@ const StepperLayout = ({ steps, children }: StepperLayoutProps) => {
             </Stepper>
 
             {/* here the current form will render */}
-            <section className='flex-1'>{children(activeStep)}</section>
-
+            <section className='flex-1'>{children(activeStep, setSubmitHandler)}</section>
             <div>
                 {allStepsCompleted() ? (
                     <>
@@ -99,7 +101,7 @@ const StepperLayout = ({ steps, children }: StepperLayoutProps) => {
                             </Button>
                             <Box sx={{ flex: '1 1 auto' }} />
                             <Button
-                                onClick={handleNext}
+                                onClick={activeStep === steps.length - 1 ? handleComplete : handleNext}
                                 sx={{ mr: 1 }}
                                 variant='contained'
                                 className='!bg-accent'
@@ -123,5 +125,4 @@ const StepperLayout = ({ steps, children }: StepperLayoutProps) => {
         </Box>
     );
 };
-
 export default StepperLayout;

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useProjectsStore } from '@/store/useProjectsStore';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -11,7 +11,11 @@ import { TextEditor } from '../../text-editor';
 import { ProjectsFormSchema, ProjectsFormType } from './projects-form-schema';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 
-export default function ProjectsForm() {
+interface ProjectsFormProps {
+    setSubmitHandler?: (submitHandler: () => Promise<boolean>) => void;
+}
+
+export default function ProjectsForm({ setSubmitHandler }: ProjectsFormProps) {
     const defaultValues: ProjectsFormType = {
         projects: [
             {
@@ -30,9 +34,10 @@ export default function ProjectsForm() {
         handleSubmit,
         setValue,
         watch,
-        formState: { errors }
+        formState: { errors, isValid }
     } = useForm<ProjectsFormType>({
         resolver: zodResolver(ProjectsFormSchema),
+        mode: 'onBlur',
         defaultValues
     });
 
@@ -42,11 +47,23 @@ export default function ProjectsForm() {
     });
 
     const { setProjectsStore, ProjectsStore } = useProjectsStore();
-    console.log(ProjectsStore);
-    const onSubmit = (data: ProjectsFormType) => {
-        console.log('Form data:', data);
+
+    const onSubmit = async (data: ProjectsFormType) => {
         setProjectsStore(data);
+
+        return true;
     };
+
+    // send the submit handler to the parent component(step-layout)
+    useEffect(() => {
+        if (setSubmitHandler) {
+            setSubmitHandler(async () => {
+                await handleSubmit(onSubmit)();
+
+                return isValid;
+            });
+        }
+    }, [handleSubmit, onSubmit, setSubmitHandler, isValid]);
 
     const projectsValues = watch('projects');
     const isAddMoreDisabled = projectsValues.some(

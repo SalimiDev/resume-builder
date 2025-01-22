@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import { useDetailsStore } from '@/store/useDetailsStore';
 import { zodResolver } from '@hookform/resolvers/zod';
 import AddIcon from '@mui/icons-material/Add';
@@ -12,16 +14,21 @@ import { DetailsFormType, detailsFormSchema } from './details-form-schema';
 // eslint-disable-next-line import/named
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 
-export default function DetailsForm() {
+interface DetailsFormProps {
+    setSubmitHandler?: (submitHandler: () => Promise<boolean>) => void;
+}
+
+export default function DetailsForm({ setSubmitHandler }: DetailsFormProps) {
     const {
         register,
         handleSubmit,
         control,
         setValue,
         watch,
-        formState: { errors }
+        formState: { errors, isValid }
     } = useForm<DetailsFormType>({
         resolver: zodResolver(detailsFormSchema),
+        mode: 'onBlur',
         defaultValues: {
             additionalFields: []
         }
@@ -34,10 +41,23 @@ export default function DetailsForm() {
 
     const { setDetailsStore, detailsStore } = useDetailsStore();
     console.log(detailsStore);
-    const onSubmit: SubmitHandler<DetailsFormType> = (data) => {
-        console.log('Form Submitted:', data);
+
+    const onSubmit = async (data: DetailsFormType) => {
         setDetailsStore(data);
+
+        return true;
     };
+
+    // send the submit handler to the parent component(step-layout)
+    useEffect(() => {
+        if (setSubmitHandler) {
+            setSubmitHandler(async () => {
+                await handleSubmit(onSubmit)();
+
+                return isValid;
+            });
+        }
+    }, [handleSubmit, onSubmit, setSubmitHandler, isValid]);
 
     return (
         <form

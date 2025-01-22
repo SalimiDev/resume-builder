@@ -1,5 +1,7 @@
 'use client';
 
+import { useEffect } from 'react';
+
 import { useExperiencesStore } from '@/store/useExperiencesStore';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Add, Delete } from '@mui/icons-material';
@@ -9,16 +11,20 @@ import { TextEditor } from '../../text-editor';
 import { ExperienceFormType, experienceFormSchema } from './experiences-form-schema';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 
-const ExperiencesForm = () => {
+interface ExperiencesFormProps {
+    setSubmitHandler?: (submitHandler: () => Promise<boolean>) => void;
+}
+
+const ExperiencesForm = ({ setSubmitHandler }: ExperiencesFormProps) => {
     const {
         register,
         control,
         handleSubmit,
-        setValue,
         watch,
-        formState: { errors }
+        formState: { errors, isValid }
     } = useForm<ExperienceFormType>({
         resolver: zodResolver(experienceFormSchema),
+        mode: 'onBlur',
         defaultValues: {
             experiences: [{ employer: '', role: '', location: '', startDate: '', endDate: '', description: '' }]
         }
@@ -40,10 +46,23 @@ const ExperiencesForm = () => {
 
     const { setExperiencesStore, experiencesStore } = useExperiencesStore();
     console.log(experiencesStore);
-    const onSubmit = (data: ExperienceFormType) => {
-        console.log('Form Data:', data);
+
+    const onSubmit = async (data: ExperienceFormType) => {
         setExperiencesStore(data);
+
+        return true;
     };
+
+    // send the submit handler to the parent component(step-layout)
+    useEffect(() => {
+        if (setSubmitHandler) {
+            setSubmitHandler(async () => {
+                await handleSubmit(onSubmit)();
+
+                return isValid;
+            });
+        }
+    }, [handleSubmit, onSubmit, setSubmitHandler, isValid]);
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className=' '>
