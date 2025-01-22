@@ -9,10 +9,10 @@ import { useFieldArray, useForm } from 'react-hook-form';
 
 const languageLevels = [
     { value: 0, label: 'Beginner' },
-    { value: 25, label: 'Elementary' },
-    { value: 50, label: 'Intermediate' },
-    { value: 75, label: 'Upper intermediate' },
-    { value: 100, label: 'Advanced' }
+    { value: 25, label: 'Intermediate' },
+    { value: 50, label: 'Upper intermediate' },
+    { value: 75, label: 'Advanced' },
+    { value: 100, label: 'Proficient' }
 ];
 
 function valuetext(value: number) {
