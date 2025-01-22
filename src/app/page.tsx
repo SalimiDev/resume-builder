@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { resumeSteps } from '@/utils/constants/resume-steps';
 
 import FormViewer from './_components/forms/form-viewer';
-import ResumePreview from './_components/preview/resume-preview';
+import { ElegantTemplate } from './_components/resume-templates';
 import StepperLayout from './layouts/stepper-layout';
 
 export default function Home() {
@@ -27,7 +27,7 @@ export default function Home() {
             {/* ستون راست */}
             <div className='relative flex h-full w-1/2 flex-1 flex-col overflow-auto bg-text-light'>
                 <div className='flex items-start justify-center overflow-auto p-4'>
-                    <ResumePreview scale={scale} />
+                    <ElegantTemplate scale={scale} />
                 </div>
 
                 <div className='absolute bottom-2 right-4 border-b border-text-light p-2'>

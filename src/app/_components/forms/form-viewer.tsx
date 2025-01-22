@@ -1,12 +1,6 @@
 import { resumeSteps } from '@/utils/constants/resume-steps';
 
-import DetailsForm from './details/details-form';
-import EducationsForm from './educations/educations-form';
-import ExperiencesForm from './experiences/experiences-form';
-import LanguagesForm from './languages/languages-form';
-import ProjectsForm from './projects/projects-form';
-import SkillsForm from './skills/skills-form';
-import SummaryForm from './summary/summary-form';
+import { DetailsForm, EducationsForm, ExperiencesForm, LanguagesForm, ProjectsForm, SkillsForm, SummaryForm } from '.';
 
 interface FormViewerProps {
     step: string;
