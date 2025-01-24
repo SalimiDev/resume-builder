@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 
+import { usePrintStore } from '@/store/usePrintStore';
 import { useResumeStore } from '@/store/useResumeStore';
 import { resumeSteps } from '@/utils/constants/resume-steps';
 
@@ -10,10 +11,9 @@ import TemplateViewer from './_components/resume-templates/template-viewer';
 import StepperLayout from './layouts/stepper-layout';
 
 export default function Home() {
-    const [scale, setScale] = useState(0.6);
     const [selectedTemplate, setSelectedTemplate] = useState('elegant');
-
     const resumeData = useResumeStore();
+    const { setScale, scale } = usePrintStore();
 
     return (
         <div className='flex size-full'>

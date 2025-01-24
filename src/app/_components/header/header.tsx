@@ -1,10 +1,20 @@
 'use client';
 
+import { usePrintStore } from '@/store/usePrintStore';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 
 export const Header: React.FC = () => {
+    const { reactToPrintFn, setScale } = usePrintStore();
+
+    const handlePrint = () => {
+        setScale(1);
+        setTimeout(() => {
+            reactToPrintFn?.();
+        }, 200);
+    };
+
     return (
         <div className='flex size-full justify-between bg-primary px-4 text-text-light'>
             <div className='flex items-center justify-center gap-4'>
@@ -18,7 +28,8 @@ export const Header: React.FC = () => {
                     role={undefined}
                     variant='contained'
                     tabIndex={-1}
-                    startIcon={<CloudDownloadIcon />}>
+                    startIcon={<CloudDownloadIcon />}
+                    onClick={() => handlePrint?.()}>
                     Download
                 </Button>
                 <div>
