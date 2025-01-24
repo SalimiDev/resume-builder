@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-import { useProjectsStore } from '@/store/useProjectsStore';
+import { useResumeStore } from '@/store/useResumeStore';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Add, Delete } from '@mui/icons-material';
 import { Button, IconButton, TextField } from '@mui/material';
@@ -46,10 +46,9 @@ export default function ProjectsForm({ setSubmitHandler }: ProjectsFormProps) {
         name: 'projects'
     });
 
-    const { setProjectsStore, ProjectsStore } = useProjectsStore();
-
+    const { setProjects } = useResumeStore();
     const onSubmit = async (data: ProjectsFormType) => {
-        setProjectsStore(data);
+        setProjects(data);
 
         return true;
     };

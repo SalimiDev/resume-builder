@@ -18,7 +18,6 @@ const formMap: Record<string, React.FC<{ setSubmitHandler: (submitHandler: () =>
 };
 
 export default function FormViewer({ step, setSubmitHandler }: FormViewerProps) {
-    console.log('🚀 ~ FormViewer ~ setSubmitHandler:', setSubmitHandler);
     const Component = formMap[step];
     const currentFormData = resumeSteps.filter((data) => data.key === step);
 

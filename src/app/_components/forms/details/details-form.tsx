@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { useDetailsStore } from '@/store/useDetailsStore';
+import { useResumeStore } from '@/store/useResumeStore';
 import { zodResolver } from '@hookform/resolvers/zod';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -11,8 +11,7 @@ import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
 
 import { DetailsFormType, detailsFormSchema } from './details-form-schema';
-// eslint-disable-next-line import/named
-import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
+import { useFieldArray, useForm } from 'react-hook-form';
 
 interface DetailsFormProps {
     setSubmitHandler?: (submitHandler: () => Promise<boolean>) => void;
@@ -39,11 +38,9 @@ export default function DetailsForm({ setSubmitHandler }: DetailsFormProps) {
         name: 'additionalFields'
     });
 
-    const { setDetailsStore, detailsStore } = useDetailsStore();
-    console.log(detailsStore);
-
+    const { setDetails } = useResumeStore();
     const onSubmit = async (data: DetailsFormType) => {
-        setDetailsStore(data);
+        setDetails(data);
 
         return true;
     };

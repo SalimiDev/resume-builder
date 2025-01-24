@@ -9,5 +9,4 @@ export const skillsFormSchema = z.object({
             .max(30, 'Skill cannot be more than 30 characters')
     )
 });
-
 export type SkillsFormType = z.infer<typeof skillsFormSchema>;

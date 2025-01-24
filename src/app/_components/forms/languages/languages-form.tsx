@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { useLanguagesStore } from '@/store/useLanguagesStore';
+import { useResumeStore } from '@/store/useResumeStore';
 import languages from '@/utils/constants/language-list';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Add, Delete } from '@mui/icons-material';
@@ -38,7 +38,7 @@ export default function LanguagesForm({ setSubmitHandler }: LanguagesFormProps) 
         defaultValues: {
             languages: [
                 {
-                    language: '',
+                    language: 'English',
                     level: 0
                 }
             ]
@@ -52,10 +52,9 @@ export default function LanguagesForm({ setSubmitHandler }: LanguagesFormProps) 
 
     const languageValues = watch('languages');
 
-    const { setLanguagesStore, languagesStore } = useLanguagesStore();
-
+    const { setLanguages } = useResumeStore();
     const onSubmit = async (data: LanguageFormType) => {
-        setLanguagesStore(data);
+        setLanguages(data);
 
         return true;
     };
@@ -70,6 +69,8 @@ export default function LanguagesForm({ setSubmitHandler }: LanguagesFormProps) 
             });
         }
     }, [handleSubmit, onSubmit, setSubmitHandler, isValid]);
+
+    const isAddMoreDisabled = languageValues.some((field) => !field.language);
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className='flex w-full flex-col gap-4'>
@@ -132,6 +133,7 @@ export default function LanguagesForm({ setSubmitHandler }: LanguagesFormProps) 
                     sx={{ width: 180 }}
                     variant='outlined'
                     startIcon={<Add />}
+                    disabled={isAddMoreDisabled}
                     onClick={() => append({ language: '', level: 0 })}>
                     Add More
                 </Button>

@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 
-import { useExperiencesStore } from '@/store/useExperiencesStore';
+import { useResumeStore } from '@/store/useResumeStore';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Add, Delete } from '@mui/icons-material';
 import { Button, IconButton, TextField } from '@mui/material';
@@ -44,11 +44,9 @@ const ExperiencesForm = ({ setSubmitHandler }: ExperiencesFormProps) => {
             !field.description
     );
 
-    const { setExperiencesStore, experiencesStore } = useExperiencesStore();
-    console.log(experiencesStore);
-
+    const { setExperiences } = useResumeStore();
     const onSubmit = async (data: ExperienceFormType) => {
-        setExperiencesStore(data);
+        setExperiences(data);
 
         return true;
     };

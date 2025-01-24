@@ -3,50 +3,36 @@
 import Image from 'next/image';
 
 import { user_placeholder1 } from '@/assets/images';
-import {
-    useDetailsStore,
-    useEducationStore,
-    useExperiencesStore,
-    useLanguagesStore,
-    useProjectsStore,
-    useSkillsStore,
-    useSummaryStore
-} from '@/store';
+import { TemplateProps } from '@/types/templates-props.types';
 
 //resume-cards
 import { DetailCard, EducationCard, ExperienceCard, LanguageCard, ProjectCard, SkillCard, SummaryCard } from '.';
 
-type ResumePreviewProps = {
-    scale: number;
-};
-
-export default function ElegantTemplate({ scale }: ResumePreviewProps) {
-    const { detailsStore } = useDetailsStore();
-    const { skillsStore } = useSkillsStore();
-    const { educationStore } = useEducationStore();
-    const { ProjectsStore } = useProjectsStore();
-    const { experiencesStore } = useExperiencesStore();
-    const { summaryStore } = useSummaryStore();
-    const { languagesStore } = useLanguagesStore();
-
+export default function ElegantTemplate({
+    details,
+    skills,
+    education,
+    projects,
+    experiences,
+    summary,
+    languages
+}: TemplateProps) {
     return (
-        <div
-            className='border-gray-300 flex aspect-[1/1.414] h-[297mm] w-[210mm] overflow-auto border bg-white shadow-lg'
-            style={{ transform: `scale(${scale})`, transformOrigin: 'top' }}>
+        <div className='flex h-full'>
             <section className='flex w-2/3 flex-col gap-8 pl-12 pr-6 pt-16'>
-                <DetailCard {...detailsStore} />
-                <ExperienceCard experiences={experiencesStore.experiences} />
-                <ProjectCard projects={ProjectsStore.projects} />
-                <EducationCard education={educationStore.education} />
+                <DetailCard {...details} />
+                <ExperienceCard {...experiences} />
+                <ProjectCard {...projects} />
+                <EducationCard {...education} />
             </section>
 
             <section className='flex w-1/3 flex-col gap-8 bg-[#22405c] px-6 pt-16 text-white'>
                 <figure className='flex w-full justify-center'>
                     <Image alt='user' src={user_placeholder1} width={120} />
                 </figure>
-                <SummaryCard summary={summaryStore.summary} />
-                <SkillCard skills={skillsStore} />
-                <LanguageCard languages={languagesStore.languages} />
+                <SummaryCard {...summary} />
+                <SkillCard skills={skills} />
+                <LanguageCard {...languages} />
             </section>
         </div>
     );

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-import { useSkillsStore } from '@/store/useSkillsStore';
+import { useResumeStore } from '@/store/useResumeStore';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@mui/material';
 import Box from '@mui/material/Box';
@@ -18,9 +18,8 @@ interface SkillsFormProps {
 }
 
 export default function SkillsForm({ setSubmitHandler }: SkillsFormProps) {
-    const { setSkillsStore } = useSkillsStore();
     const [skillInput, setSkillInput] = useState('');
-    const [skills, setSkills] = useState<string[]>([]);
+    const [skills, setLocalSkills] = useState<string[]>([]);
 
     const {
         handleSubmit,
@@ -37,17 +36,18 @@ export default function SkillsForm({ setSubmitHandler }: SkillsFormProps) {
     const addSkill = async () => {
         const isValid = await trigger();
         if (isValid && skillInput.trim() && !skills.includes(skillInput.trim())) {
-            setSkills((prev) => [...prev, skillInput.trim()]);
+            setLocalSkills((prev) => [...prev, skillInput.trim()]);
             setSkillInput('');
         }
     };
 
     const handleDelete = (skill: string) => {
-        setSkills((prev) => prev.filter((item) => item !== skill));
+        setLocalSkills((prev) => prev.filter((item) => item !== skill));
     };
 
+    const { setSkills } = useResumeStore();
     const onSubmit = async (data: SkillsFormType) => {
-        setSkillsStore(skills);
+        setSkills(skills);
         //TODO FIX THIS
 
         return true;
