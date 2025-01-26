@@ -141,17 +141,12 @@ export default function DetailsForm({ setSubmitHandler }: DetailsFormProps) {
                 );
             })}
 
-            {/* دکمه اضافه کردن فیلد */}
             <div className='flex gap-4'>
                 <Button
                     startIcon={<AddIcon />}
                     variant='outlined'
                     onClick={() => append({ id: fields.length + 1, value: '', isLink: false })}>
                     Add More
-                </Button>
-
-                <Button variant='contained' type='submit'>
-                    Submit
                 </Button>
             </div>
         </form>

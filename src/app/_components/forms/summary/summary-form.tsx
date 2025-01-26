@@ -50,10 +50,6 @@ export default function SummaryForm({ setSubmitHandler }: SummaryFormProps) {
             />
 
             {!!errors.summary && <p className='text-red-500 text-sm'>{errors.summary?.message}</p>}
-
-            <Button variant='contained' type='submit'>
-                Save
-            </Button>
         </form>
     );
 }

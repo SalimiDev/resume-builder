@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 
 import { useResumeStore } from '@/store/useResumeStore';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button } from '@mui/material';
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
@@ -84,10 +83,6 @@ export default function SkillsForm({ setSubmitHandler }: SkillsFormProps) {
                         }
                     }}
                 />
-
-                <Button variant='contained' type='submit'>
-                    Submit
-                </Button>
             </Box>
 
             <Stack direction='row' spacing={1} className='flex-wrap gap-y-3'>

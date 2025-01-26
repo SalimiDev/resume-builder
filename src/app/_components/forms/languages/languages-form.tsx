@@ -137,10 +137,6 @@ export default function LanguagesForm({ setSubmitHandler }: LanguagesFormProps) 
                     onClick={() => append({ language: '', level: 0 })}>
                     Add More
                 </Button>
-
-                <Button variant='contained' type='submit'>
-                    Submit
-                </Button>
             </Box>
         </form>
     );

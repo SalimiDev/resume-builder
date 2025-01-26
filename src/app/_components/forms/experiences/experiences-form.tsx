@@ -150,10 +150,6 @@ const ExperiencesForm = ({ setSubmitHandler }: ExperiencesFormProps) => {
                     disabled={isAddMoreDisabled}>
                     Add More
                 </Button>
-
-                <Button type='submit' variant='contained' color='primary'>
-                    Submit
-                </Button>
             </div>
         </form>
     );

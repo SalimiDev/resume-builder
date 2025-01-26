@@ -142,10 +142,6 @@ export default function EducationsForm({ setSubmitHandler }: EducationsFormProps
                     disabled={isAddMoreDisabled}>
                     Add More
                 </Button>
-
-                <Button type='submit' variant='contained' color='primary'>
-                    Submit
-                </Button>
             </Box>
         </form>
     );
