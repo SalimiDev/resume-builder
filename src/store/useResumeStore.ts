@@ -17,26 +17,19 @@ interface ResumeState extends TemplateProps {
     setProjects: (data: ProjectsFormType) => void;
     setSkills: (skills: string[]) => void;
     setSummary: (data: SummaryFormType) => void;
+    clearStepData: (stepKey: string) => void;
 }
-
+// prettier-ignore
 export const useResumeStore = create(
-    // prettier-ignore
     immer<ResumeState>((set) => ({
-        details: {
-            name: '',
-            lastName: '',
-            role:'',
-            email: '',
-            phoneNumber: '',
-            location: '',
-            additionalFields: []
-        },
+        details: { name: '', lastName: '', role:'', email: '', phoneNumber: '', location: '', additionalFields: [] },
         education: { education: [] },
         experiences: { experiences: [] },
         languages: { languages: [], level: 0 },
         projects: { projects: [] },
         skills: [],
         summary: { summary: '' },
+
         setDetails: (data) => set((state) => { state.details = data; }),
         setEducation: (data) => set((state) => { state.education = data; }),
         setExperiences: (data) => set((state) => { state.experiences = data; }),
@@ -44,5 +37,20 @@ export const useResumeStore = create(
         setProjects: (data) => set((state) => { state.projects = data; }),
         setSkills: (skills) => set((state) => { state.skills = skills; }),
         setSummary: (data) => set((state) => { state.summary = data; }),
+
+    
+        clearStepData: (stepKey) => set((state) => {
+            if (stepKey in state) {
+                switch (stepKey) {
+                    case 'details': state.details = { name: '', lastName: '', role: '', email: '', phoneNumber: '', location: '', additionalFields: [] }; break;
+                    case 'education': state.education = { education: [] }; break;
+                    case 'experiences': state.experiences = { experiences: [] }; break;
+                    case 'languages': state.languages = { languages: [] }; break;
+                    case 'projects': state.projects = { projects: [] }; break;
+                    case 'skills': state.skills = []; break;
+                    case 'summary': state.summary = { summary: '' }; break;
+                }
+            }
+        }),
     }))
 );

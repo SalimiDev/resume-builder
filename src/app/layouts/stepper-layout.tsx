@@ -1,5 +1,6 @@
 import { ReactNode, useRef, useState } from 'react';
 
+import { useResumeStore } from '@/store/useResumeStore';
 import { ResumeStepsType } from '@/types/resume-steps.interface';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import { Box, Button, Step, StepButton, StepLabel, Stepper, Typography } from '@mui/material';
@@ -54,11 +55,20 @@ const StepperLayout = ({ steps, children }: StepperLayoutProps) => {
             ...completed,
             [activeStep]: true
         });
-        // handleNext();
     };
     const handleReset = () => {
         setActiveStep(0);
         setCompleted({});
+    };
+
+    const handleSkip = () => {
+        const stepKeys = ['details', 'education', 'experiences', 'languages', 'projects', 'skills', 'summary'];
+        useResumeStore.getState().clearStepData(stepKeys[activeStep]);
+
+        const newActiveStep =
+            isLastStep() && !allStepsCompleted() ? steps.findIndex((step, i) => !(i in completed)) : activeStep + 1;
+
+        setActiveStep(newActiveStep);
     };
 
     return (
@@ -100,6 +110,15 @@ const StepperLayout = ({ steps, children }: StepperLayoutProps) => {
                                 Back
                             </Button>
                             <Box sx={{ flex: '1 1 auto' }} />
+                            <Button
+                                id='skipstep'
+                                color='inherit'
+                                onClick={handleSkip}
+                                sx={{ mr: 1 }}
+                                variant='outlined'
+                                className='!border-accent !text-accent disabled:!border-base-content disabled:!text-base-content'>
+                                Skip
+                            </Button>
                             <Button
                                 onClick={activeStep === steps.length - 1 ? handleComplete : handleNext}
                                 sx={{ mr: 1 }}
