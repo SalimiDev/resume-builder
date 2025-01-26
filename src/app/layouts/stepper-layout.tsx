@@ -5,6 +5,8 @@ import { ResumeStepsType } from '@/types/resume-steps.interface';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import { Box, Button, Step, StepButton, StepLabel, Stepper, Typography } from '@mui/material';
 
+import CompletedDialog from '../_components/completed-steps-dialog/completed-dialog';
+
 type StepperLayoutProps = {
     steps: ResumeStepsType[];
     children: (activeStep: number, setSubmitHandler: (submitHandler: () => Promise<boolean>) => void) => ReactNode;
@@ -13,6 +15,7 @@ type StepperLayoutProps = {
 const StepperLayout = ({ steps, children }: StepperLayoutProps) => {
     const [activeStep, setActiveStep] = useState(0);
     const [completed, setCompleted] = useState<{ [k: number]: boolean }>({});
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
     const submitHandlerRef = useRef<(() => void) | null>(null);
 
     const totalSteps = () => steps.length;
@@ -49,6 +52,8 @@ const StepperLayout = ({ steps, children }: StepperLayoutProps) => {
             if (typeof isValid !== 'boolean') {
                 throw new Error('Submit handler must return a boolean value.');
             }
+            isValid && isLastStep() && setIsDialogOpen(true);
+
             if (!isValid) return;
         }
         setCompleted({
@@ -59,6 +64,7 @@ const StepperLayout = ({ steps, children }: StepperLayoutProps) => {
     const handleReset = () => {
         setActiveStep(0);
         setCompleted({});
+        setIsDialogOpen(false);
     };
 
     const handleSkip = () => {
@@ -68,7 +74,11 @@ const StepperLayout = ({ steps, children }: StepperLayoutProps) => {
         const newActiveStep =
             isLastStep() && !allStepsCompleted() ? steps.findIndex((step, i) => !(i in completed)) : activeStep + 1;
 
-        setActiveStep(newActiveStep);
+        if (isLastStep()) {
+            setIsDialogOpen(true);
+        } else {
+            setActiveStep(activeStep + 1);
+        }
     };
 
     return (
@@ -88,6 +98,7 @@ const StepperLayout = ({ steps, children }: StepperLayoutProps) => {
 
             {/* here the current form will render */}
             <section className='flex-1'>{children(activeStep, setSubmitHandler)}</section>
+
             <div>
                 {allStepsCompleted() ? (
                     <>
@@ -99,48 +110,38 @@ const StepperLayout = ({ steps, children }: StepperLayoutProps) => {
                     </>
                 ) : (
                     <>
-                        {/* <Typography sx={{ mt: 2, mb: 1, py: 1 }}>Step {activeStep + 1}</Typography> */}
                         <Box sx={{ display: 'flex', flexDirection: 'row', p: 3 }}>
                             <Button
-                                color='inherit'
-                                disabled={activeStep === 0}
                                 onClick={handleBack}
+                                className='border-primary font-semibold text-primary'
                                 sx={{ mr: 1 }}
-                                className='border-primary font-semibold text-primary'>
+                                color='inherit'
+                                disabled={activeStep === 0}>
                                 Back
                             </Button>
                             <Box sx={{ flex: '1 1 auto' }} />
                             <Button
-                                id='skipstep'
-                                color='inherit'
                                 onClick={handleSkip}
+                                className='!border-accent !text-accent disabled:!border-base-content disabled:!text-base-content'
                                 sx={{ mr: 1 }}
-                                variant='outlined'
-                                className='!border-accent !text-accent disabled:!border-base-content disabled:!text-base-content'>
+                                color='inherit'
+                                variant='outlined'>
                                 Skip
                             </Button>
                             <Button
                                 onClick={activeStep === steps.length - 1 ? handleComplete : handleNext}
+                                className='!bg-accent'
                                 sx={{ mr: 1 }}
                                 variant='contained'
-                                className='!bg-accent'
                                 endIcon={<NavigateNextIcon />}>
                                 {activeStep === steps.length - 1 ? 'Finish' : 'Save & Next'}
                             </Button>
-                            {/* {activeStep !== steps.length &&
-                                (completed[activeStep] ? (
-                                    <Typography variant='caption' sx={{ display: 'inline-block' }}>
-                                        Step {activeStep + 1} already completed
-                                    </Typography>
-                                ) : (
-                                    <Button onClick={handleComplete}>
-                                        {completedSteps() === totalSteps() - 1 ? 'Finish' : 'Complete Step'}
-                                    </Button>
-                                ))} */}
                         </Box>
                     </>
                 )}
             </div>
+
+            <CompletedDialog open={isDialogOpen} handleClose={handleReset} />
         </Box>
     );
 };

@@ -12,7 +12,7 @@ export const Header: React.FC = () => {
         setScale(1);
         setTimeout(() => {
             reactToPrintFn?.();
-        }, 200);
+        }, 150);
     };
 
     return (

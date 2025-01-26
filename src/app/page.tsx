@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { usePrintStore } from '@/store/usePrintStore';
 import { useResumeStore } from '@/store/useResumeStore';
@@ -21,7 +21,7 @@ export default function Home() {
             <div className='flex h-full w-1/2 flex-col overflow-auto border-r'>
                 <StepperLayout steps={resumeSteps}>
                     {(activeStep, setSubmitHandler) => {
-                        const currentStepKey = resumeSteps[activeStep].key;
+                        const currentStepKey = useMemo(() => resumeSteps[activeStep].key, [activeStep]);
 
                         return <FormViewer step={currentStepKey} setSubmitHandler={setSubmitHandler} />;
                     }}
