@@ -16,35 +16,54 @@ interface ExperiencesFormProps {
 }
 
 const ExperiencesForm = ({ setSubmitHandler }: ExperiencesFormProps) => {
+    const { experiences, setExperiences } = useResumeStore();
+
+    const defaultValues: ExperienceFormType = {
+        experiences: [
+            {
+                employer: '',
+                role: '',
+                location: '',
+                startDate: '',
+                endDate: '',
+                description: ''
+            }
+        ]
+    };
+
     const {
         register,
         control,
         handleSubmit,
+        reset,
         watch,
         formState: { errors, isValid }
     } = useForm<ExperienceFormType>({
         resolver: zodResolver(experienceFormSchema),
         mode: 'onBlur',
-        defaultValues: {
-            experiences: [{ employer: '', role: '', location: '', startDate: '', endDate: '', description: '' }]
-        }
+        defaultValues: experiences.experiences?.length ? experiences : defaultValues
     });
 
     const { fields, append, remove } = useFieldArray({ control, name: 'experiences' });
 
-    const experiencesValues = watch('experiences');
+    useEffect(() => {
+        if (experiences.experiences?.length) {
+            reset(experiences);
+        } else {
+            reset(defaultValues);
+        }
+    }, [experiences, reset]);
 
+    const experiencesValues = watch('experiences');
     const isAddMoreDisabled = experiencesValues.some(
         (field) =>
-            !field.employer ||
-            !field.role ||
-            !field.location ||
+            !field.employer?.trim() ||
+            !field.role?.trim() ||
+            !field.location?.trim() ||
             !field.startDate ||
-            !field.endDate ||
-            !field.description
+            !field.endDate
     );
 
-    const { setExperiences } = useResumeStore();
     const onSubmit = async (data: ExperienceFormType) => {
         setExperiences(data);
 

@@ -17,8 +17,9 @@ interface SkillsFormProps {
 }
 
 export default function SkillsForm({ setSubmitHandler }: SkillsFormProps) {
+    const { skills, setSkills } = useResumeStore();
     const [skillInput, setSkillInput] = useState('');
-    const [skills, setLocalSkills] = useState<string[]>([]);
+    const [localSkills, setLocalSkills] = useState<string[]>(skills);
 
     const {
         handleSubmit,
@@ -27,32 +28,26 @@ export default function SkillsForm({ setSubmitHandler }: SkillsFormProps) {
     } = useForm<SkillsFormType>({
         resolver: zodResolver(skillsFormSchema),
         mode: 'onBlur',
-        defaultValues: {
-            skills: []
-        }
+        defaultValues: { skills: localSkills }
     });
 
     const addSkill = async () => {
-        const isValid = await trigger();
-        if (isValid && skillInput.trim() && !skills.includes(skillInput.trim())) {
-            setLocalSkills((prev) => [...prev, skillInput.trim()]);
+        if ((await trigger()) && skillInput.trim() && !localSkills.includes(skillInput.trim())) {
+            setLocalSkills([...localSkills, skillInput.trim()]);
             setSkillInput('');
         }
     };
 
     const handleDelete = (skill: string) => {
-        setLocalSkills((prev) => prev.filter((item) => item !== skill));
+        setLocalSkills(localSkills.filter((item) => item !== skill));
     };
 
-    const { setSkills } = useResumeStore();
-    const onSubmit = async (data: SkillsFormType) => {
-        setSkills(skills);
-        //TODO FIX THIS
+    const onSubmit = async () => {
+        setSkills(localSkills);
 
         return true;
     };
 
-    // send the submit handler to the parent component(step-layout)
     useEffect(() => {
         if (setSubmitHandler) {
             setSubmitHandler(async () => {
@@ -69,7 +64,6 @@ export default function SkillsForm({ setSubmitHandler }: SkillsFormProps) {
             className='mb-6 flex flex-col gap-4 rounded-lg border bg-white p-4 shadow-md'>
             <Box className='flex gap-2'>
                 <TextField
-                    id='outlined-basic'
                     label='Skills'
                     variant='outlined'
                     value={skillInput}
@@ -86,7 +80,7 @@ export default function SkillsForm({ setSubmitHandler }: SkillsFormProps) {
             </Box>
 
             <Stack direction='row' spacing={1} className='flex-wrap gap-y-3'>
-                {skills.map((skill, index) => (
+                {localSkills.map((skill, index) => (
                     <Chip key={index} label={skill} onDelete={() => handleDelete(skill)} />
                 ))}
             </Stack>

@@ -16,6 +16,8 @@ interface ProjectsFormProps {
 }
 
 export default function ProjectsForm({ setSubmitHandler }: ProjectsFormProps) {
+    const { projects, setProjects } = useResumeStore();
+
     const defaultValues: ProjectsFormType = {
         projects: [
             {
@@ -32,13 +34,13 @@ export default function ProjectsForm({ setSubmitHandler }: ProjectsFormProps) {
         register,
         control,
         handleSubmit,
-        setValue,
+        reset,
         watch,
         formState: { errors, isValid }
     } = useForm<ProjectsFormType>({
         resolver: zodResolver(ProjectsFormSchema),
         mode: 'onBlur',
-        defaultValues
+        defaultValues: projects.projects.length ? projects : defaultValues
     });
 
     const { fields, append, remove } = useFieldArray({
@@ -46,14 +48,20 @@ export default function ProjectsForm({ setSubmitHandler }: ProjectsFormProps) {
         name: 'projects'
     });
 
-    const { setProjects } = useResumeStore();
+    useEffect(() => {
+        if (!projects.projects.length) {
+            reset(defaultValues);
+        } else {
+            reset(projects);
+        }
+    }, [projects, reset]);
+
     const onSubmit = async (data: ProjectsFormType) => {
         setProjects(data);
 
         return true;
     };
 
-    // send the submit handler to the parent component(step-layout)
     useEffect(() => {
         if (setSubmitHandler) {
             setSubmitHandler(async () => {
@@ -66,8 +74,7 @@ export default function ProjectsForm({ setSubmitHandler }: ProjectsFormProps) {
 
     const projectsValues = watch('projects');
     const isAddMoreDisabled = projectsValues.some(
-        (field) =>
-            !field.projectName || !field.startDate || !field.endDate || !field.description || !field.externalLinks
+        (field) => !field.projectName || !field.startDate || !field.endDate || !field.description
     );
 
     return (

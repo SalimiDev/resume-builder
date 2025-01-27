@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 
 import { usePrintStore } from '@/store/usePrintStore';
-import { TemplateProps } from '@/types/templates-props.types';
+import { TemplateProps } from '@/types/template-props.types';
 
 import { ElegantTemplate } from '.';
 import { useReactToPrint } from 'react-to-print';

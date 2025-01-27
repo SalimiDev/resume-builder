@@ -5,7 +5,7 @@ import { LanguageFormType } from '@/app/_components/forms/languages/languages-fo
 import { ProjectsFormType } from '@/app/_components/forms/projects/projects-form-schema';
 import { SummaryFormType } from '@/app/_components/forms/summary/summary-form-schema';
 
-export type TemplateProps = {
+export interface TemplateProps {
     details: DetailsFormType;
     skills: string[];
     education: EducationFormType;
@@ -13,4 +13,4 @@ export type TemplateProps = {
     experiences: ExperienceFormType;
     summary: SummaryFormType;
     languages: LanguageFormType;
-};
+}

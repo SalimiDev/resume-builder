@@ -16,25 +16,29 @@ interface EducationsFormProps {
 }
 
 export default function EducationsForm({ setSubmitHandler }: EducationsFormProps) {
+    const { education, setEducation } = useResumeStore();
+    const defaultValues: EducationFormType = {
+        education: [
+            {
+                degree: '',
+                schoolName: '',
+                schoolLocation: '',
+                graduationDate: ''
+            }
+        ]
+    };
+
     const {
         control,
         handleSubmit,
         register,
         watch,
+        reset,
         formState: { errors, isValid }
     } = useForm<EducationFormType>({
         resolver: zodResolver(educationFormSchema),
         mode: 'onBlur',
-        defaultValues: {
-            education: [
-                {
-                    degree: '',
-                    schoolName: '',
-                    schoolLocation: '',
-                    graduationDate: ''
-                }
-            ]
-        }
+        defaultValues: education.education?.length ? education : defaultValues
     });
 
     const { fields, append, remove } = useFieldArray({
@@ -44,11 +48,9 @@ export default function EducationsForm({ setSubmitHandler }: EducationsFormProps
 
     const educationValues = watch('education');
 
-    const isAddMoreDisabled = educationValues.some(
+    const isAddMoreDisabled = educationValues?.some(
         (field) => !field.degree || !field.schoolName || !field.schoolLocation || !field.graduationDate
     );
-
-    const { setEducation } = useResumeStore();
 
     const onSubmit = async (data: EducationFormType) => {
         setEducation(data);
@@ -56,7 +58,14 @@ export default function EducationsForm({ setSubmitHandler }: EducationsFormProps
         return true;
     };
 
-    // send the submit handler to the parent component(step-layout)
+    useEffect(() => {
+        if (education.education?.length) {
+            reset(education);
+        } else {
+            reset(defaultValues);
+        }
+    }, [education, reset]);
+
     useEffect(() => {
         if (setSubmitHandler) {
             setSubmitHandler(async () => {
@@ -75,6 +84,7 @@ export default function EducationsForm({ setSubmitHandler }: EducationsFormProps
                         <TextField
                             select
                             label='Degree'
+                            defaultValue={education.education?.[index]?.degree || ''}
                             error={!!errors.education?.[index]?.degree}
                             helperText={errors.education?.[index]?.degree?.message}
                             {...register(`education.${index}.degree`)}>

@@ -18,6 +18,8 @@ interface DetailsFormProps {
 }
 
 export default function DetailsForm({ setSubmitHandler }: DetailsFormProps) {
+    const { details, setDetails } = useResumeStore();
+
     const {
         register,
         handleSubmit,
@@ -28,9 +30,7 @@ export default function DetailsForm({ setSubmitHandler }: DetailsFormProps) {
     } = useForm<DetailsFormType>({
         resolver: zodResolver(detailsFormSchema),
         mode: 'onBlur',
-        defaultValues: {
-            additionalFields: []
-        }
+        defaultValues: details
     });
 
     const { fields, append, remove } = useFieldArray({
@@ -38,7 +38,6 @@ export default function DetailsForm({ setSubmitHandler }: DetailsFormProps) {
         name: 'additionalFields'
     });
 
-    const { setDetails } = useResumeStore();
     const onSubmit = async (data: DetailsFormType) => {
         setDetails(data);
 

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
 import { useResumeStore } from '@/store/useResumeStore';
-import languages from '@/utils/constants/language-list';
+import languageData from '@/utils/constants/language-list';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Add, Delete } from '@mui/icons-material';
 import { Autocomplete, Box, Button, IconButton, Slider, TextField } from '@mui/material';
@@ -26,23 +26,22 @@ interface LanguagesFormProps {
 }
 
 export default function LanguagesForm({ setSubmitHandler }: LanguagesFormProps) {
+    const { languages, setLanguages } = useResumeStore();
+    const defaultValues = {
+        languages: [{ language: 'English', level: 0 }]
+    };
+
     const {
         control,
         handleSubmit,
         register,
         setValue,
+        reset,
         watch,
         formState: { errors, isValid }
     } = useForm<LanguageFormType>({
         resolver: zodResolver(languageFormSchema),
-        defaultValues: {
-            languages: [
-                {
-                    language: 'English',
-                    level: 0
-                }
-            ]
-        }
+        defaultValues: languages.languages?.length ? languages : defaultValues
     });
 
     const { fields, append, remove } = useFieldArray({
@@ -50,9 +49,16 @@ export default function LanguagesForm({ setSubmitHandler }: LanguagesFormProps) 
         name: 'languages'
     });
 
+    useEffect(() => {
+        if (!languages.languages.length) {
+            reset(defaultValues);
+        } else {
+            reset(languages);
+        }
+    }, [languages, reset]);
+
     const languageValues = watch('languages');
 
-    const { setLanguages } = useResumeStore();
     const onSubmit = async (data: LanguageFormType) => {
         setLanguages(data);
 
@@ -78,7 +84,7 @@ export default function LanguagesForm({ setSubmitHandler }: LanguagesFormProps) 
                 <Box key={field.id} className='flex w-full flex-row items-center justify-between gap-5'>
                     <Box className='flex w-2/3 flex-col gap-4'>
                         <Autocomplete
-                            options={languages}
+                            options={languageData}
                             value={languageValues[index]?.language || ''}
                             onChange={(event, newValue) => {
                                 setValue(`languages.${index}.language`, newValue ?? '');

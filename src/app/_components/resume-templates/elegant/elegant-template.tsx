@@ -3,7 +3,7 @@
 import Image from 'next/image';
 
 import { user_placeholder1 } from '@/assets/images';
-import { TemplateProps } from '@/types/templates-props.types';
+import { TemplateProps } from '@/types/template-props.types';
 
 //resume-cards
 import { DetailCard, EducationCard, ExperienceCard, LanguageCard, ProjectCard, SkillCard, SummaryCard } from '.';

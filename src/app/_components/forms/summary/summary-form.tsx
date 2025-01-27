@@ -13,6 +13,8 @@ interface SummaryFormProps {
 }
 
 export default function SummaryForm({ setSubmitHandler }: SummaryFormProps) {
+    const { summary, setSummary } = useResumeStore();
+
     const {
         register,
         handleSubmit,
@@ -20,10 +22,10 @@ export default function SummaryForm({ setSubmitHandler }: SummaryFormProps) {
         formState: { errors, isValid }
     } = useForm<SummaryFormType>({
         resolver: zodResolver(summaryFormSchema),
-        mode: 'onBlur'
+        mode: 'onBlur',
+        defaultValues: summary
     });
 
-    const { setSummary } = useResumeStore();
     const onSubmit = async (data: SummaryFormType) => {
         setSummary(data);
     };
