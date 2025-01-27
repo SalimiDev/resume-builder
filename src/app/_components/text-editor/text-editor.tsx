@@ -6,19 +6,20 @@ import 'react-quill/dist/quill.snow.css';
 type TextEditorProps = {
     value: string | undefined;
     onChange: (value: string) => void;
+    toolbarId: string;
 };
 
-export function TextEditor({ value, onChange }: TextEditorProps) {
+export function TextEditor({ value, onChange, toolbarId }: TextEditorProps) {
     return (
         <div className='form-group col-md-12 editor quill-content'>
-            <EditorToolbar toolbarId={'t2'} />
+            <EditorToolbar toolbarId={toolbarId} />
             <ReactQuill
                 className='h-36'
                 theme='snow'
                 value={value}
                 onChange={onChange}
                 placeholder={'Write more information...'}
-                modules={modules('t2')}
+                modules={modules(toolbarId)}
                 formats={formats}
             />
         </div>

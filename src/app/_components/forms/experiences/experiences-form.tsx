@@ -132,7 +132,9 @@ const ExperiencesForm = ({ setSubmitHandler }: ExperiencesFormProps) => {
                     <Controller
                         name={`experiences.${index}.description`}
                         control={control}
-                        render={({ field }) => <TextEditor value={field.value} onChange={field.onChange} />}
+                        render={({ field }) => (
+                            <TextEditor value={field.value} onChange={field.onChange} toolbarId={`toolbar-${index}`} />
+                        )}
                     />
 
                     {errors.experiences?.[index]?.description && (
@@ -142,7 +144,7 @@ const ExperiencesForm = ({ setSubmitHandler }: ExperiencesFormProps) => {
                     {index > 0 && (
                         <IconButton
                             onClick={() => remove(index)}
-                            className='absolute right-2 top-2'
+                            className='right-2 top-2'
                             aria-label='delete'
                             color='error'>
                             <Delete />

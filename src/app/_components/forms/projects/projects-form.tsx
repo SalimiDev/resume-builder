@@ -114,7 +114,13 @@ export default function ProjectsForm({ setSubmitHandler }: ProjectsFormProps) {
                     <Controller
                         name={`projects.${projectIndex}.description`}
                         control={control}
-                        render={({ field }) => <TextEditor value={field.value} onChange={field.onChange} />}
+                        render={({ field }) => (
+                            <TextEditor
+                                value={field.value}
+                                onChange={field.onChange}
+                                toolbarId={`toolbar-${projectIndex}`}
+                            />
+                        )}
                     />
 
                     {errors.projects?.[projectIndex]?.description && (
@@ -124,7 +130,11 @@ export default function ProjectsForm({ setSubmitHandler }: ProjectsFormProps) {
                     <ExternalLinksFieldArray register={register} control={control} projectIndex={projectIndex} />
 
                     {projectIndex > 0 && (
-                        <IconButton onClick={() => remove(projectIndex)} className='!absolute right-2 top-2'>
+                        <IconButton
+                            onClick={() => remove(projectIndex)}
+                            className='right-2 top-2'
+                            aria-label='delete'
+                            color='error'>
                             <Delete />
                         </IconButton>
                     )}
@@ -137,15 +147,7 @@ export default function ProjectsForm({ setSubmitHandler }: ProjectsFormProps) {
                     type='button'
                     variant='outlined'
                     disabled={isAddMoreDisabled}
-                    onClick={() =>
-                        append({
-                            projectName: '',
-                            startDate: '',
-                            endDate: '',
-                            description: '',
-                            externalLinks: []
-                        })
-                    }>
+                    onClick={() => append(defaultValues.projects[0])}>
                     Add More
                 </Button>
             </div>
