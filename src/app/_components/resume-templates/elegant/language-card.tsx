@@ -3,7 +3,6 @@ import Rating from '@mui/material/Rating';
 import { LanguageFormType } from '../../forms/languages/languages-form-schema';
 
 export default function LanguageCard({ languages }: LanguageFormType) {
-    console.log('🚀 ~ LanguageCard ~ languages:', languages);
     if (!languages.length) return null;
 
     enum LanguageLevel {
@@ -13,7 +12,6 @@ export default function LanguageCard({ languages }: LanguageFormType) {
         Advanced = 75,
         Proficient = 100
     }
-    const value = 3.5;
 
     return (
         <div className='flex w-full flex-col gap-2 overflow-hidden'>
@@ -30,7 +28,7 @@ export default function LanguageCard({ languages }: LanguageFormType) {
                         className='size-5 text-xs'
                         color='primary'
                         name='text-feedback'
-                        value={value}
+                        value={language.level / 25 + 1}
                         icon={<span className='text-text-light'>●</span>}
                         readOnly
                         emptyIcon={<span className='text-text-light opacity-40'>●</span>}

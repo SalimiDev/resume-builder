@@ -68,7 +68,7 @@ const StepperLayout = ({ steps, children }: StepperLayoutProps) => {
     };
 
     const handleSkip = () => {
-        const stepKeys = ['details', 'education', 'experiences', 'languages', 'projects', 'skills', 'summary'];
+        const stepKeys = ['details', 'summary', 'skills', 'languages', 'experiences', 'projects', 'education'];
         useResumeStore.getState().clearStepData(stepKeys[activeStep]);
 
         const newActiveStep =

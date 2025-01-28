@@ -7,12 +7,13 @@ export const detailsFormSchema = z.object({
     email: z.string().email('Invalid email address'),
     phoneNumber: z.string().regex(/^\d{11}$/, 'Phone number must be exactly 11 digits'),
     location: z.string().min(1, 'Location is required'),
-    additionalFields: z
+    extraFields: z
         .array(
             z.object({
-                id: z.number(),
+                id: z.string(),
                 value: z.string().min(1, 'This field is required'),
-                isLink: z.boolean()
+                isLink: z.boolean(),
+                icon: z.any().optional()
             })
         )
         .optional()

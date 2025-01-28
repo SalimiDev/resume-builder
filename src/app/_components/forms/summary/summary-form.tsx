@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 
 import { useResumeStore } from '@/store/useResumeStore';
 import { zodResolver } from '@hookform/resolvers/zod';
-import Button from '@mui/material/Button';
 
 import { TextEditor } from '../../text-editor';
 import { SummaryFormType, summaryFormSchema } from './summary-form-schema';
@@ -16,7 +15,6 @@ export default function SummaryForm({ setSubmitHandler }: SummaryFormProps) {
     const { summary, setSummary } = useResumeStore();
 
     const {
-        register,
         handleSubmit,
         control,
         formState: { errors, isValid }
@@ -48,7 +46,9 @@ export default function SummaryForm({ setSubmitHandler }: SummaryFormProps) {
             <Controller
                 control={control}
                 name={`summary`}
-                render={({ field }) => <TextEditor value={field.value} onChange={field.onChange} />}
+                render={({ field }) => (
+                    <TextEditor value={field.value} onChange={field.onChange} toolbarId={`toolbar-summary`} />
+                )}
             />
 
             {!!errors.summary && <p className='text-red-500 text-sm'>{errors.summary?.message}</p>}

@@ -3,7 +3,6 @@ import '../../text-editor/text-editor.css';
 import 'react-quill/dist/quill.snow.css';
 
 export default function ProjectCard({ projects }: ProjectsFormType) {
-    console.log('🚀 ~ ProjectCard ~ projects:', projects);
     if (!projects.length) return null;
 
     console.log('projectscard', projects);
@@ -29,10 +28,11 @@ export default function ProjectCard({ projects }: ProjectsFormType) {
                             dangerouslySetInnerHTML={{ __html: project.description || '' }}
                         />
 
-                        {project.externalLinks?.map((link, index) => (
-                            <div key={index} className='mt-2 flex gap-1'>
-                                <img src={link.icon} alt='icon' className='size-6' />
-                                <a href={link.url}>{link.url}</a>
+                        {project.extraFields?.map(({ id, icon, isLink, value }) => (
+                            <div key={id} className='mt-2 flex gap-1'>
+                                {icon && <img src={icon} alt='icon' className='size-5' />}
+
+                                {isLink ? <a href={value}>{value}</a> : <p>{value}</p>}
                             </div>
                         ))}
                     </div>
@@ -40,14 +40,4 @@ export default function ProjectCard({ projects }: ProjectsFormType) {
             ))}
         </div>
     );
-}
-
-{
-    /* <div className='mt-2 flex gap-1'>
-    <GitHub fontSize='small' className='text-base-25' />
-    <label htmlFor='' className='font-semibold'>
-        GitHub:
-    </label>
-    <a href='https://shorturl.at/YLmQI'>https://github.com/SalimiDev/Hotel-ReactJsApp</a>
-</div>; */
 }

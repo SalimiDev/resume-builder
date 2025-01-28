@@ -8,7 +8,6 @@ type TextEditorProps = {
     onChange: (value: string) => void;
     toolbarId: string;
 };
-
 export function TextEditor({ value, onChange, toolbarId }: TextEditorProps) {
     return (
         <div className='form-group col-md-12 editor quill-content'>

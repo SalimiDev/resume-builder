@@ -3,7 +3,7 @@ import { AlternateEmail, Link, LocationOn, Phone } from '@mui/icons-material';
 import { DetailsFormType } from '../../forms/details/details-form-schema';
 
 export default function DetailCard(data: DetailsFormType) {
-    const { name, lastName, phoneNumber, location, role, email, additionalFields } = data;
+    const { name, lastName, phoneNumber, location, role, email, extraFields } = data;
 
     return (
         <div className='flex flex-col gap-2'>
@@ -36,18 +36,17 @@ export default function DetailCard(data: DetailsFormType) {
                     </div>
                 )}
 
-                {additionalFields?.map((field) =>
-                    field.isLink ? (
-                        <div key={field.id}>
-                            <Link fontSize='small' className='text-base-25' />
-                            <a href={`${field.value}`}>{field.value}</a>
-                        </div>
-                    ) : (
-                        <div key={field.id}>
-                            <p>{field.value}</p>
-                        </div>
-                    )
-                )}
+                {extraFields?.map(({ id, isLink, icon, value }) => (
+                    <div key={id}>
+                        {icon ? (
+                            <img src={icon} alt='icon' className='size-5' />
+                        ) : (
+                            isLink && <Link fontSize='small' className='text-base-25' />
+                        )}
+
+                        {isLink ? <a href={value}>{value}</a> : <p>{value}</p>}
+                    </div>
+                ))}
             </div>
         </div>
     );

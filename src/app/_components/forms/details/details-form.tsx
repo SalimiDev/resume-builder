@@ -2,16 +2,11 @@ import { useEffect } from 'react';
 
 import { useResumeStore } from '@/store/useResumeStore';
 import { zodResolver } from '@hookform/resolvers/zod';
-import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/Delete';
-import LinkIcon from '@mui/icons-material/Link';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import TextField from '@mui/material/TextField';
+import { Box, TextField } from '@mui/material';
 
+import ExtraField from '../extra-field';
 import { DetailsFormType, detailsFormSchema } from './details-form-schema';
-import { useFieldArray, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 
 interface DetailsFormProps {
     setSubmitHandler?: (submitHandler: () => Promise<boolean>) => void;
@@ -24,18 +19,11 @@ export default function DetailsForm({ setSubmitHandler }: DetailsFormProps) {
         register,
         handleSubmit,
         control,
-        setValue,
-        watch,
         formState: { errors, isValid }
     } = useForm<DetailsFormType>({
         resolver: zodResolver(detailsFormSchema),
         mode: 'onBlur',
         defaultValues: details
-    });
-
-    const { fields, append, remove } = useFieldArray({
-        control,
-        name: 'additionalFields'
     });
 
     const onSubmit = async (data: DetailsFormType) => {
@@ -112,42 +100,7 @@ export default function DetailsForm({ setSubmitHandler }: DetailsFormProps) {
                 />
             </Box>
 
-            {/* مدیریت فیلدهای اضافی */}
-            {fields.map((field, index) => {
-                const isLink = watch(`additionalFields.${index}.isLink`);
-
-                return (
-                    <Box key={field.id} className='flex items-center gap-2'>
-                        <TextField
-                            className='w-1/2'
-                            label={`Additional Field ${index + 1}`}
-                            variant='outlined'
-                            {...register(`additionalFields.${index}.value` as const)}
-                            error={!!errors.additionalFields?.[index]?.value}
-                            helperText={errors.additionalFields?.[index]?.value?.message}
-                        />
-
-                        <IconButton
-                            color={isLink ? 'primary' : 'default'}
-                            onClick={() => setValue(`additionalFields.${index}.isLink`, !isLink)}>
-                            <LinkIcon />
-                        </IconButton>
-
-                        <IconButton color='error' onClick={() => remove(index)}>
-                            <DeleteIcon />
-                        </IconButton>
-                    </Box>
-                );
-            })}
-
-            <div className='flex gap-4'>
-                <Button
-                    startIcon={<AddIcon />}
-                    variant='outlined'
-                    onClick={() => append({ id: fields.length + 1, value: '', isLink: false })}>
-                    Add More
-                </Button>
-            </div>
+            <ExtraField<DetailsFormType> control={control} name='extraFields' />
         </form>
     );
 }

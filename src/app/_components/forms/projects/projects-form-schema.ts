@@ -1,8 +1,10 @@
 import { z } from 'zod';
 
-const linkSchema = z.object({
-    url: z.string().nonempty('Link URL is required.').url('Please enter a valid URL.'),
-    icon: z.any().optional()
+const extraFieldSchema = z.object({
+    id: z.string(),
+    value: z.string().nonempty('Extra field is required.'),
+    icon: z.any().optional(),
+    isLink: z.boolean().default(true)
 });
 
 const projectSchema = z.object({
@@ -10,7 +12,7 @@ const projectSchema = z.object({
     startDate: z.string().nonempty('Start date is required.'),
     endDate: z.string().nonempty('End date is required.'),
     description: z.string().optional(),
-    externalLinks: z.array(linkSchema).optional()
+    extraFields: z.array(extraFieldSchema).optional()
 });
 
 export const ProjectsFormSchema = z.object({
