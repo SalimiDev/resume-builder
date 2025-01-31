@@ -22,7 +22,7 @@ export default function FormViewer({ step, setSubmitHandler }: FormViewerProps) 
     const currentFormData = resumeSteps.filter((data) => data.key === step);
 
     return step ? (
-        <section className='flex flex-col gap-3 p-6'>
+        <section className='flex flex-col gap-3 p-8'>
             {currentFormData.map((form) => (
                 <div key={form.key}>
                     <header className='mb-3 border-b border-base-content pb-3'>
