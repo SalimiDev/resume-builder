@@ -6,6 +6,11 @@ import { usePrintStore } from '@/store/usePrintStore';
 import { useResumeStore } from '@/store/useResumeStore';
 import { useTemplateStore } from '@/store/useTemplateStore';
 import { resumeSteps } from '@/utils/constants/resume-steps';
+import AddBoxIcon from '@mui/icons-material/AddBox';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
+import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
+import IsoIcon from '@mui/icons-material/Iso';
 
 import FormViewer from './_components/forms/form-viewer';
 import TemplateViewer from './_components/resume-templates/template-viewer';
@@ -41,10 +46,8 @@ export default function Home() {
                         <TemplateViewer scale={scale} templateKey={currentTemplate} resumeData={resumeData} />
                     </div>
 
-                    <div className='absolute bottom-2 right-4 border-b border-text-light p-2'>
-                        <label htmlFor='zoom' className='mr-2'>
-                            زوم:
-                        </label>
+                    <div className='absolute bottom-2 right-4 flex gap-2 border-b border-text-light p-2 text-primary-content'>
+                        <IsoIcon />
                         <input
                             type='range'
                             id='zoom'
@@ -53,7 +56,7 @@ export default function Home() {
                             step='0.1'
                             value={scale}
                             onChange={(e) => setScale(parseFloat(e.target.value))}
-                            className='cursor-pointer'
+                            className='w-16 cursor-pointer'
                         />
                     </div>
                 </div>
