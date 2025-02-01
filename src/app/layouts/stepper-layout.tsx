@@ -3,7 +3,7 @@ import { ReactNode, useRef, useState } from 'react';
 import { useResumeStore } from '@/store/useResumeStore';
 import { ResumeStepsType } from '@/types/resume-steps.interface';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import { Box, Button, Step, StepButton, StepLabel, Stepper, Typography } from '@mui/material';
+import { Box, Button, Step, StepButton, StepConnector, StepLabel, Stepper, Typography } from '@mui/material';
 
 import CompletedDialog from '../_components/completed-steps-dialog/completed-dialog';
 
@@ -86,14 +86,23 @@ const StepperLayout = ({ steps, children }: StepperLayoutProps) => {
             <Stepper
                 nonLinear
                 activeStep={activeStep}
-                className='flex h-14 flex-shrink-0 items-center border-b border-text-light bg-accent p-2'>
-                {steps.map((step, index) => (
-                    <Step key={step.key} completed={completed[index]}>
-                        <StepButton color='inherit' onClick={handleStep(index)}>
-                            {step.title}
-                        </StepButton>
-                    </Step>
-                ))}
+                connector={<StepConnector className='custom-step-connector' />}
+                className='flex h-14 flex-shrink-0 items-center border-b bg-accent p-2'>
+                {steps.map((step, index) => {
+                    const IconComponent = step.icon;
+
+                    return (
+                        <Step key={step.key} completed={completed[index]}>
+                            <StepButton color='inherit' onClick={handleStep(index)}>
+                                <StepLabel
+                                    slots={{ stepIcon: IconComponent }}
+                                    slotProps={{ stepIcon: { className: 'text-base-50' } }}>
+                                    {step.title}
+                                </StepLabel>
+                            </StepButton>
+                        </Step>
+                    );
+                })}
             </Stepper>
 
             {/* here the current form will render */}

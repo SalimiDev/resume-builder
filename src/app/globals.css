@@ -22,3 +22,9 @@
         transform: none !important;
     }
 }
+
+@layer components {
+    .custom-step-connector .MuiStepConnector-line {
+        @apply !border-base-50;
+    }
+}
