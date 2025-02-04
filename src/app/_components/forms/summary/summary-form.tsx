@@ -1,8 +1,11 @@
+'use client';
+
 import { useEffect } from 'react';
 
 import { useResumeStore } from '@/store/useResumeStore';
 import { zodResolver } from '@hookform/resolvers/zod';
 
+import { AvatarUpload } from '../../avatar-upload';
 import { TextEditor } from '../../text-editor';
 import { SummaryFormType, summaryFormSchema } from './summary-form-schema';
 import { Controller, useForm } from 'react-hook-form';
@@ -25,10 +28,9 @@ export default function SummaryForm({ setSubmitHandler }: SummaryFormProps) {
     });
 
     const onSubmit = async (data: SummaryFormType) => {
-        setSummary(data);
+        setSummary({ ...data, avatar: summary.avatar });
     };
 
-    // send the submit handler to the parent component(step-layout)
     useEffect(() => {
         if (setSubmitHandler) {
             setSubmitHandler(async () => {
@@ -43,14 +45,15 @@ export default function SummaryForm({ setSubmitHandler }: SummaryFormProps) {
         <form
             onSubmit={handleSubmit(onSubmit)}
             className='mb-6 flex flex-col gap-4 rounded-lg border bg-white p-4 shadow-md'>
+            <AvatarUpload onFileChange={(base64) => setSummary({ ...summary, avatar: base64 })} />
+
             <Controller
                 control={control}
-                name={`summary`}
+                name='summary'
                 render={({ field }) => (
-                    <TextEditor value={field.value} onChange={field.onChange} toolbarId={`toolbar-summary`} />
+                    <TextEditor value={field.value} onChange={field.onChange} toolbarId='toolbar-summary' />
                 )}
             />
-
             {!!errors.summary && <p className='text-red-500 text-sm'>{errors.summary?.message}</p>}
         </form>
     );

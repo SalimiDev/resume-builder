@@ -56,7 +56,7 @@ export const useResumeStore = create(
             }),
         })),
         {
-            name: 'resume-storage', // نام کلید ذخیره در localStorage
+            name: 'resume-storage', 
             storage: createJSONStorage(() => localStorage)
         }
     )
