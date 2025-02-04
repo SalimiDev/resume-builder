@@ -1,8 +1,7 @@
 'use client';
 
-import Image from 'next/image';
-
 import { user_placeholder1 } from '@/assets/images';
+import { useResumeStore } from '@/store/useResumeStore';
 import { TemplateProps } from '@/types/template-props.types';
 
 //resume-cards
@@ -17,6 +16,10 @@ export default function ElegantTemplate({
     summary,
     languages
 }: TemplateProps) {
+    const {
+        summary: { avatar }
+    } = useResumeStore();
+
     return (
         <div className='flex h-full'>
             <section className='flex w-2/3 flex-col gap-8 pl-12 pr-6 pt-16'>
@@ -27,8 +30,12 @@ export default function ElegantTemplate({
             </section>
 
             <section className='flex w-1/3 flex-col gap-8 bg-[#22405c] px-6 pt-16 text-white'>
-                <figure className='flex w-full justify-center'>
-                    <Image alt='user' src={user_placeholder1} width={120} />
+                <figure className='mx-auto flex justify-center overflow-hidden'>
+                    <img
+                        alt='user image'
+                        src={typeof avatar === 'string' ? avatar : user_placeholder1.src}
+                        className='size-32 rounded-full object-cover'
+                    />
                 </figure>
                 <SummaryCard {...summary} />
                 <SkillCard skills={skills} />
