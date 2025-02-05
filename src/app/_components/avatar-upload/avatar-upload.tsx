@@ -52,11 +52,16 @@ export function AvatarUpload({ onFileChange }: AvatarUploadProps) {
         <div className='justify-cente flex flex-col items-center gap-7'>
             <div onClick={handleClick} className='size-24 cursor-pointer overflow-hidden rounded-full border'>
                 {preview ? (
-                    <img
-                        src={typeof preview === 'string' ? preview : undefined}
-                        alt='user image'
-                        className='size-full object-cover'
-                    />
+                    <div className='text-gray-500 relative flex size-full items-center justify-center'>
+                        <img
+                            src={typeof preview === 'string' ? preview : undefined}
+                            alt='user image'
+                            className='size-full object-cover'
+                        />
+                        <span className='absolute -bottom-4 z-50 grid h-1/2 w-full justify-center py-1 text-white backdrop-contrast-50'>
+                            <AddIcon />
+                        </span>
+                    </div>
                 ) : (
                     <div className='text-gray-500 relative flex size-full items-center justify-center'>
                         <img
