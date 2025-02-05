@@ -4,7 +4,7 @@ import { useResumeStore } from '@/store/useResumeStore';
 import languageData from '@/utils/constants/language-list';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Add, Delete } from '@mui/icons-material';
-import { Autocomplete, Box, Button, IconButton, Slider, TextField } from '@mui/material';
+import { Autocomplete, Box, Button, IconButton, Slider, TextField, Tooltip } from '@mui/material';
 
 import { LanguageFormType, languageFormSchema } from './languages-form-schema';
 import { useFieldArray, useForm } from 'react-hook-form';
@@ -135,14 +135,16 @@ export default function LanguagesForm({ setSubmitHandler }: LanguagesFormProps) 
             ))}
 
             <Box className='mt-8 flex gap-2'>
-                <Button
-                    sx={{ width: 180 }}
-                    variant='outlined'
-                    startIcon={<Add />}
-                    disabled={isAddMoreDisabled}
-                    onClick={() => append({ language: '', level: 0 })}>
-                    Add More
-                </Button>
+                <Tooltip title='Add new language'>
+                    <Button
+                        sx={{ width: 180 }}
+                        variant='outlined'
+                        startIcon={<Add />}
+                        disabled={isAddMoreDisabled}
+                        onClick={() => append({ language: '', level: 0 })}>
+                        Add More
+                    </Button>
+                </Tooltip>
             </Box>
         </form>
     );

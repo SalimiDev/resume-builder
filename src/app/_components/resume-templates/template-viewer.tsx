@@ -30,7 +30,7 @@ export default function TemplateViewer({ templateKey, resumeData }: TemplateView
         <div
             ref={contentRef}
             style={{ transform: `scale(${scale})`, transformOrigin: 'top' }}
-            className='border-gray-300 aspect-[1/1.414] h-[297mm] w-[210mm] overflow-auto border bg-white shadow-lg'>
+            className='aspect-[1/1.414] h-[297mm] w-[210mm] overflow-auto bg-white shadow-lg drop-shadow-lg'>
             <Template {...resumeData} />
         </div>
     );

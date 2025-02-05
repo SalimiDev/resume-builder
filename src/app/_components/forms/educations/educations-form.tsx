@@ -4,7 +4,7 @@ import { useResumeStore } from '@/store/useResumeStore';
 import { zodResolver } from '@hookform/resolvers/zod';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Box, Button, MenuItem, TextField } from '@mui/material';
+import { Box, Button, MenuItem, TextField, Tooltip } from '@mui/material';
 
 import { EducationFormType, educationFormSchema } from './educations-form-schema';
 import { useFieldArray, useForm } from 'react-hook-form';
@@ -137,21 +137,23 @@ export default function EducationsForm({ setSubmitHandler }: EducationsFormProps
             ))}
 
             <Box className='flex gap-4'>
-                <Button
-                    startIcon={<AddIcon />}
-                    type='button'
-                    variant='outlined'
-                    onClick={() =>
-                        append({
-                            degree: '',
-                            schoolName: '',
-                            schoolLocation: '',
-                            graduationDate: ''
-                        })
-                    }
-                    disabled={isAddMoreDisabled}>
-                    Add More
-                </Button>
+                <Tooltip title='Add new education'>
+                    <Button
+                        startIcon={<AddIcon />}
+                        type='button'
+                        variant='outlined'
+                        onClick={() =>
+                            append({
+                                degree: '',
+                                schoolName: '',
+                                schoolLocation: '',
+                                graduationDate: ''
+                            })
+                        }
+                        disabled={isAddMoreDisabled}>
+                        Add More
+                    </Button>
+                </Tooltip>
             </Box>
         </form>
     );

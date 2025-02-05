@@ -4,10 +4,7 @@ import { useEffect, useState } from 'react';
 
 import { useResumeStore } from '@/store/useResumeStore';
 import { zodResolver } from '@hookform/resolvers/zod';
-import Box from '@mui/material/Box';
-import Chip from '@mui/material/Chip';
-import Stack from '@mui/material/Stack';
-import TextField from '@mui/material/TextField';
+import { Box, Button, Chip, Stack, TextField, Tooltip } from '@mui/material';
 
 import { SkillsFormType, skillsFormSchema } from './skills-form-schema';
 import { useForm } from 'react-hook-form';
@@ -64,6 +61,7 @@ export default function SkillsForm({ setSubmitHandler }: SkillsFormProps) {
             className='mb-6 flex flex-col gap-4 rounded-lg border bg-white p-4 shadow-md'>
             <Box className='flex gap-2'>
                 <TextField
+                    className='w-72'
                     label='Skills'
                     variant='outlined'
                     value={skillInput}
@@ -77,6 +75,9 @@ export default function SkillsForm({ setSubmitHandler }: SkillsFormProps) {
                         }
                     }}
                 />
+                <Tooltip title='Add Skill'>
+                    <Button onClick={addSkill}>Add</Button>
+                </Tooltip>
             </Box>
 
             <Stack direction='row' spacing={1} className='flex-wrap gap-y-3'>

@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import { useResumeStore } from '@/store/useResumeStore';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Add, Delete } from '@mui/icons-material';
-import { Button, IconButton, TextField } from '@mui/material';
+import { Button, IconButton, TextField, Tooltip } from '@mui/material';
 
 import { TextEditor } from '../../text-editor';
 import ExtraField from '../extra-field';
@@ -139,14 +139,16 @@ export default function ProjectsForm({ setSubmitHandler }: ProjectsFormProps) {
             ))}
 
             <div className='flex gap-4'>
-                <Button
-                    startIcon={<Add />}
-                    type='button'
-                    variant='outlined'
-                    disabled={isAddMoreDisabled}
-                    onClick={() => append(defaultValues.projects[0])}>
-                    Add More
-                </Button>
+                <Tooltip title='Add new project'>
+                    <Button
+                        startIcon={<Add />}
+                        type='button'
+                        variant='outlined'
+                        disabled={isAddMoreDisabled}
+                        onClick={() => append(defaultValues.projects[0])}>
+                        Add More
+                    </Button>
+                </Tooltip>
             </div>
         </form>
     );

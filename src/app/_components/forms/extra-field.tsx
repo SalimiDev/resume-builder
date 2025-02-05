@@ -95,8 +95,8 @@ export default function ExtraField<TFieldValues extends FieldValues>({ control, 
                                 <Button
                                     component='label'
                                     // role={undefined}
-                                    variant='contained'
                                     // tabIndex={-1}
+                                    variant='contained'
                                     startIcon={<CloudUpload />}>
                                     Upload icon
                                     <VisuallyHiddenInput
@@ -113,32 +113,33 @@ export default function ExtraField<TFieldValues extends FieldValues>({ control, 
                                                 iconField.onChange(null);
                                             }
                                         }}
-                                        // multiple
                                     />
                                 </Button>
                             )}
                         />
-
-                        <IconButton color='error' onClick={() => remove(index)} aria-label='delete-link'>
-                            <Delete />
-                        </IconButton>
+                        <Tooltip title='Remove'>
+                            <IconButton color='error' onClick={() => remove(index)} aria-label='delete-link'>
+                                <Delete />
+                            </IconButton>
+                        </Tooltip>
                     </div>
                 );
             })}
-
-            <Button
-                startIcon={<Add />}
-                variant='outlined'
-                onClick={() =>
-                    safeAppend({
-                        id,
-                        value: '',
-                        icon: null,
-                        isLink: true
-                    } as FieldArray<TFieldValues, typeof name>)
-                }>
-                New Field
-            </Button>
+            <Tooltip title='Add more field'>
+                <Button
+                    startIcon={<Add />}
+                    variant='outlined'
+                    onClick={() =>
+                        safeAppend({
+                            id,
+                            value: '',
+                            icon: null,
+                            isLink: true
+                        } as FieldArray<TFieldValues, typeof name>)
+                    }>
+                    New Field
+                </Button>
+            </Tooltip>
         </div>
     );
 }

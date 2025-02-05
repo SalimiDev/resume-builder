@@ -3,7 +3,7 @@ import { ReactNode, useRef, useState } from 'react';
 import { useResumeStore } from '@/store/useResumeStore';
 import { ResumeStepsType } from '@/types/resume-steps.interface';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import { Box, Button, Step, StepButton, StepConnector, StepLabel, Stepper, Typography } from '@mui/material';
+import { Box, Button, Step, StepButton, StepConnector, StepLabel, Stepper, Tooltip, Typography } from '@mui/material';
 
 import CompletedDialog from '../_components/completed-steps-dialog/completed-dialog';
 
@@ -71,9 +71,6 @@ const StepperLayout = ({ steps, children }: StepperLayoutProps) => {
         const stepKeys = ['details', 'summary', 'skills', 'languages', 'experiences', 'projects', 'education'];
         useResumeStore.getState().clearStepData(stepKeys[activeStep]);
 
-        const newActiveStep =
-            isLastStep() && !allStepsCompleted() ? steps.findIndex((step, i) => !(i in completed)) : activeStep + 1;
-
         if (isLastStep()) {
             setIsDialogOpen(true);
         } else {
@@ -129,22 +126,29 @@ const StepperLayout = ({ steps, children }: StepperLayoutProps) => {
                                 Back
                             </Button>
                             <Box sx={{ flex: '1 1 auto' }} />
-                            <Button
-                                onClick={handleSkip}
-                                className='!border-accent !text-accent disabled:!border-base-content disabled:!text-base-content'
-                                sx={{ mr: 1 }}
-                                color='inherit'
-                                variant='outlined'>
-                                Skip
-                            </Button>
-                            <Button
-                                onClick={activeStep === steps.length - 1 ? handleComplete : handleNext}
-                                className='!bg-accent'
-                                sx={{ mr: 1 }}
-                                variant='contained'
-                                endIcon={<NavigateNextIcon />}>
-                                {activeStep === steps.length - 1 ? 'Finish' : 'Save & Next'}
-                            </Button>
+                            <Tooltip title='Skip & Clear data'>
+                                <Button
+                                    onClick={handleSkip}
+                                    className='!border-accent !text-accent disabled:!border-base-content disabled:!text-base-content'
+                                    sx={{ mr: 1 }}
+                                    color='inherit'
+                                    variant='outlined'>
+                                    Skip
+                                </Button>
+                            </Tooltip>
+                            <Tooltip
+                                title={
+                                    activeStep === steps.length - 1 ? 'Finish and Download' : 'Save and go to next step'
+                                }>
+                                <Button
+                                    onClick={activeStep === steps.length - 1 ? handleComplete : handleNext}
+                                    className='!bg-accent'
+                                    sx={{ mr: 1 }}
+                                    variant='contained'
+                                    endIcon={<NavigateNextIcon />}>
+                                    {activeStep === steps.length - 1 ? 'Finish' : 'Save & Next'}
+                                </Button>
+                            </Tooltip>
                         </Box>
                     </>
                 )}
