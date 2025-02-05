@@ -1,24 +1,43 @@
 .quill-content h1 {
     font-size: 28px !important;
     font-weight: bold !important;
-    color: #222 !important;
 }
-
 .quill-content h2 {
     font-size: 24px !important;
     font-weight: bold !important;
-    color: #333 !important;
 }
-
 .quill-content h3 {
     font-size: 20px !important;
     font-weight: bold !important;
-    color: #444 !important;
+}
+.quill-content h4 {
+    font-size: 18px !important;
+    font-weight: bold !important;
+}
+.quill-content h5 {
+    font-size: 16px !important;
+    font-weight: bold !important;
+}
+.quill-content h6 {
+    font-size: 14px !important;
+    font-weight: bold !important;
 }
 
 .quill-content p {
     font-size: 16px !important;
-    color: #555 !important;
+}
+
+.quill-content .ql-size-extra-small {
+    font-size: 12px !important;
+}
+.quill-content .ql-size-small {
+    font-size: 14px !important;
+}
+.quill-content .ql-size-medium {
+    font-size: 16px !important;
+}
+.quill-content .ql-size-large {
+    font-size: 18px !important;
 }
 
 .quill-content strong {
@@ -52,8 +71,46 @@
 .quill-content li {
     margin-bottom: 5px !important;
     font-size: 16px !important;
-    color: #444 !important;
 }
+
+.quill-content blockquote {
+    font-style: italic !important;
+    border-left: 4px solid #999 !important;
+    padding-left: 10px !important;
+    color: #666 !important;
+}
+
+.quill-content pre {
+    background: #f4f4f4 !important;
+    padding: 10px !important;
+    border-radius: 5px !important;
+    font-family: 'Courier New', monospace !important;
+}
+
+.ql-align-center {
+    text-align: center;
+}
+.ql-align-start {
+    text-align: start;
+}
+.ql-align-end {
+    text-align: end;
+}
+.ql-align-justify {
+    text-align: justify;
+}
+.ql-align-left {
+    text-align: left;
+}
+.ql-align-right {
+    text-align: right;
+}
+
+.ql-indent-1 {
+    text-indent: 30px;
+}
+
+/*** TOOLBAR STYLES ***/
 
 .ql-toolbar {
     background: #f9f9f9 !important;
@@ -88,22 +145,9 @@
     color: #222 !important;
 }
 
-.quill-content blockquote {
-    font-style: italic !important;
-    border-left: 4px solid #999 !important;
-    padding-left: 10px !important;
-    color: #666 !important;
-}
-
-.quill-content pre {
-    background: #f4f4f4 !important;
-    padding: 10px !important;
-    border-radius: 5px !important;
-    font-family: 'Courier New', monospace !important;
-}
 /* /--------------------------------------- */
 
-.quill-sidebar-content {
+/* .quill-sidebar-content {
     .quill-content h1 {
         font-size: 28px !important;
         font-weight: bold !important;
@@ -133,4 +177,4 @@
         font-size: 16px !important;
         color: white !important;
     }
-}
+} */
