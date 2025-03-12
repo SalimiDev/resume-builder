@@ -2,12 +2,12 @@ import './text-editor.css';
 import { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
-function undoChange() {
-    this.quill.history.undo();
-}
-function redoChange() {
-    this.quill.history.redo();
-}
+// function undoChange() {
+//     this.quill.history.undo();
+// }
+// function redoChange() {
+//     this.quill.history.redo();
+// }
 
 // Add sizes to whitelist and register them
 const Size = Quill.import('formats/size');
@@ -24,8 +24,8 @@ export const modules = (props: string) => ({
     toolbar: {
         container: '#' + props,
         handlers: {
-            undo: undoChange,
-            redo: redoChange
+            // undo: undoChange,
+            // redo: redoChange
         }
     },
     history: {
