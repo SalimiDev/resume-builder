@@ -6,10 +6,6 @@ import { usePrintStore } from '@/store/usePrintStore';
 import { useResumeStore } from '@/store/useResumeStore';
 import { useTemplateStore } from '@/store/useTemplateStore';
 import { resumeSteps } from '@/utils/constants/resume-steps';
-import AddBoxIcon from '@mui/icons-material/AddBox';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
-import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
-import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
 import IsoIcon from '@mui/icons-material/Iso';
 
 import FormViewer from './_components/forms/form-viewer';

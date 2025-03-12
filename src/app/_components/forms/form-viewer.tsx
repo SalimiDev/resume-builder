@@ -1,21 +1,21 @@
-import { resumeSteps } from '@/utils/constants/resume-steps';
+import dynamic from 'next/dynamic';
 
-import { DetailsForm, EducationsForm, ExperiencesForm, LanguagesForm, ProjectsForm, SkillsForm, SummaryForm } from '.';
+import { resumeSteps } from '@/utils/constants/resume-steps';
 
 interface FormViewerProps {
     step: string;
     setSubmitHandler: (submitHandler: () => Promise<boolean>) => void;
 }
-
 const formMap: Record<string, React.FC<{ setSubmitHandler: (submitHandler: () => Promise<boolean>) => void }>> = {
-    summary: SummaryForm,
-    experiences: ExperiencesForm,
-    educations: EducationsForm,
-    languages: LanguagesForm,
-    projects: ProjectsForm,
-    details: DetailsForm,
-    skills: SkillsForm
-};
+    summary: dynamic(() => import('./summary/summary-form'), { ssr: false }),
+    experiences: dynamic(() => import('./experiences/experiences-form'), { ssr: false }),
+    educations: dynamic(() => import('./educations/educations-form'), { ssr: false }),
+    languages: dynamic(() => import('./languages/languages-form'), { ssr: false }),
+    projects: dynamic(() => import('./projects/projects-form'), { ssr: false }),
+    details: dynamic(() => import('./details/details-form'), { ssr: false }),
+    skills: dynamic(() => import('./skills/skills-form'), { ssr: false })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+} as Record<string, any>;
 
 export default function FormViewer({ step, setSubmitHandler }: FormViewerProps) {
     const Component = formMap[step];
