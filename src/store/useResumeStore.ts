@@ -25,7 +25,7 @@ interface ResumeState extends TemplateProps {
 export const useResumeStore = create(
     persist(
         immer<ResumeState>((set) => ({
-            details: { name: '', lastName: '', role:'', email: '', phoneNumber: '', location: '', additionalFields: [] },
+            details: { name: '', lastName: '', role:'', email: '', phoneNumber: '', location: '', extraFields: [] },
             education: { education: [] },
             experiences: { experiences: [] },
             languages: { languages: [], level: 0 },
@@ -44,7 +44,7 @@ export const useResumeStore = create(
             clearStepData: (stepKey) => set((state) => {
                 if (stepKey in state) {
                     switch (stepKey) {
-                        case 'details': state.details = { name: '', lastName: '', role: '', email: '', phoneNumber: '', location: '', additionalFields: [] }; break;
+                        case 'details': state.details = { name: '', lastName: '', role: '', email: '', phoneNumber: '', location: '', extraFields: [] }; break;
                         case 'education': state.education = { education: [] }; break;
                         case 'experiences': state.experiences = { experiences: [] }; break;
                         case 'languages': state.languages = { languages: [] }; break;
