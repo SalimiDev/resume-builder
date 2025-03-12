@@ -1,16 +1,12 @@
-// /** @type {import('next').NextConfig} */
-// const nextConfig = {
-//     /* config options here */
-// };
-
-// export default nextConfig;
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    /* config options here */
     swcMinify: true,
     experimental: {
         polyfillsOptimization: true
-    }
+    },
+    output: 'export',
+    basePath: process.env.NODE_ENV === 'production' ? '/resume-builder' : '',
+    assetPrefix: process.env.NODE_ENV === 'production' ? '/resume-builder/' : ''
 };
 
 module.exports = nextConfig;
