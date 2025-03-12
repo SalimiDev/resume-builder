@@ -10,7 +10,6 @@
         "lint": "next lint",
         "format": "prettier --write .",
         "prepare": "husky",
-        "predeploy": "npm run build && npm run export",
         "deploy": "gh-pages -d out"
     },
     "lint-staged": {
