@@ -1,9 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    swcMinify: true,
+    /* config options here */
     output: 'export',
+    swcMinify: true,
     experimental: {
         polyfillsOptimization: true
+    },
+    images: {
+        unoptimized: true
     }
 };
 
