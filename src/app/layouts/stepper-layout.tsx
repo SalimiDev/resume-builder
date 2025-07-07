@@ -69,6 +69,13 @@ const StepperLayout = ({ steps, children }: StepperLayoutProps) => {
         setIsDialogOpen(false);
     };
 
+    const handleStartNew = () => {
+        setActiveStep(0);
+        setCompleted({});
+        setIsDialogOpen(false);
+        useResumeStore.getState().clearAllData();
+    };
+
     const handleSkip = () => {
         const stepKeys = ['details', 'summary', 'skills', 'languages', 'experiences', 'projects', 'education'];
         useResumeStore.getState().clearStepData(stepKeys[activeStep]);
@@ -156,7 +163,7 @@ const StepperLayout = ({ steps, children }: StepperLayoutProps) => {
                 )}
             </div>
 
-            <CompletedDialog open={isDialogOpen} handleClose={handleReset} />
+            <CompletedDialog open={isDialogOpen} handleClose={handleReset} handleStartNew={handleStartNew} />
         </Box>
     );
 };

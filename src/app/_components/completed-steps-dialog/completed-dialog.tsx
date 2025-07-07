@@ -16,9 +16,10 @@ import Confetti from '../confetti';
 type CompletedDialogProps = {
     open: boolean;
     handleClose: () => void;
+    handleStartNew: () => void;
 };
 
-export default function CompletedDialog({ open, handleClose }: CompletedDialogProps) {
+export default function CompletedDialog({ open, handleClose, handleStartNew }: CompletedDialogProps) {
     const { reactToPrintFn, setScale } = usePrintStore();
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
@@ -39,12 +40,12 @@ export default function CompletedDialog({ open, handleClose }: CompletedDialogPr
                     <DialogTitle id='responsive-dialog-title'>{'Congratulations 🥳'}</DialogTitle>
                     <DialogContent className='mb-12 text-center'>
                         <DialogContentText>
-                            You’ve successfully completed your resume. Now, you can download it for free or start a new
-                            one. Take your career to the next level with a well-crafted resume! 🚀
+                            You&apos;ve successfully completed your resume. Now, you can download it for free or start a
+                            new one. Take your career to the next level with a well-crafted resume! 🚀
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions className='absolute bottom-4'>
-                        <Button onClick={handleClose}>Start new</Button>
+                        <Button onClick={handleStartNew}>Start new</Button>
                         <Button autoFocus variant='contained' color='primary' onClick={() => handleDownload?.()}>
                             Download
                         </Button>

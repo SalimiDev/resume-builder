@@ -19,6 +19,7 @@ interface ResumeState extends TemplateProps {
     setSkills: (skills: string[]) => void;
     setSummary: (data: SummaryFormType) => void;
     clearStepData: (stepKey: string) => void;
+    clearAllData: () => void;
 }
 
 // prettier-ignore
@@ -28,7 +29,7 @@ export const useResumeStore = create(
             details: { name: '', lastName: '', role:'', email: '', phoneNumber: '', location: '', extraFields: [] },
             education: { education: [] },
             experiences: { experiences: [] },
-            languages: { languages: [], level: 0 },
+            languages: { languages: [] },
             projects: { projects: [] },
             skills: [],
             summary: { summary: '' },
@@ -53,6 +54,16 @@ export const useResumeStore = create(
                         case 'summary': state.summary = { summary: '' }; break;
                     }
                 }
+            }),
+
+            clearAllData: () => set((state) => {
+                state.details = { name: '', lastName: '', role: '', email: '', phoneNumber: '', location: '', extraFields: [] };
+                state.education = { education: [] };
+                state.experiences = { experiences: [] };
+                state.languages = { languages: [] };
+                state.projects = { projects: [] };
+                state.skills = [];
+                state.summary = { summary: '' };
             }),
         })),
         {

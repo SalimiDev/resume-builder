@@ -45,6 +45,7 @@ export default function Home() {
                     <div className='absolute bottom-2 right-4 flex gap-2 border-b border-text-light p-2 text-primary-content'>
                         <IsoIcon />
                         <input
+                            aria-label='zoom'
                             type='range'
                             id='zoom'
                             min='0.5'
