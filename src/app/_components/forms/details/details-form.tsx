@@ -1,8 +1,8 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 
 import { useResumeStore } from '@/store/useResumeStore';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Box, TextField } from '@mui/material';
+import { Box, Grid2, TextField, Typography } from '@mui/material';
 
 import ExtraField from '../extra-field';
 import { DetailsFormType, detailsFormSchema } from './details-form-schema';
@@ -12,6 +12,13 @@ interface DetailsFormProps {
     setSubmitHandler?: (submitHandler: () => Promise<boolean>) => void;
 }
 
+interface FormFieldConfig {
+    name: keyof DetailsFormType;
+    label: string;
+    type?: string;
+    autoComplete?: string;
+}
+
 export default function DetailsForm({ setSubmitHandler }: DetailsFormProps) {
     const { details, setDetails } = useResumeStore();
 
@@ -19,88 +26,113 @@ export default function DetailsForm({ setSubmitHandler }: DetailsFormProps) {
         register,
         handleSubmit,
         control,
-        formState: { errors, isValid }
+        formState: { errors, isValid, isSubmitting }
     } = useForm<DetailsFormType>({
         resolver: zodResolver(detailsFormSchema),
         mode: 'onBlur',
         defaultValues: details
     });
 
-    const onSubmit = async (data: DetailsFormType) => {
-        setDetails(data);
+    // Memoize form field configurations to prevent unnecessary re-renders
+    const formFields = useMemo<FormFieldConfig[][]>(
+        () => [
+            [
+                { name: 'name', label: 'First Name', autoComplete: 'given-name' },
+                { name: 'lastName', label: 'Last Name', autoComplete: 'family-name' }
+            ],
+            [
+                { name: 'role', label: 'Professional Title', autoComplete: 'organization-title' },
+                { name: 'location', label: 'Location', autoComplete: 'address-level2' }
+            ],
+            [
+                { name: 'email', label: 'Email Address', type: 'email', autoComplete: 'email' },
+                { name: 'phoneNumber', label: 'Phone Number', type: 'tel', autoComplete: 'tel' }
+            ]
+        ],
+        []
+    );
 
-        return true;
-    };
+    // Memoize the submit handler to prevent unnecessary re-renders
+    const onSubmit = useCallback(
+        async (data: DetailsFormType): Promise<boolean> => {
+            try {
+                setDetails(data);
 
-    // send the submit handler to the parent component(step-layout)
+                return true;
+            } catch (error) {
+                console.error('Error submitting details form:', error);
+
+                return false;
+            }
+        },
+        [setDetails]
+    );
+
+    // Send the submit handler to the parent component
     useEffect(() => {
         if (setSubmitHandler) {
             setSubmitHandler(async () => {
-                await handleSubmit(onSubmit)();
+                try {
+                    let isFormValid = false;
+                    await handleSubmit((data) => {
+                        isFormValid = true;
 
-                return isValid;
+                        return onSubmit(data);
+                    })();
+
+                    return isFormValid && isValid;
+                } catch (error) {
+                    console.error('Form submission error:', error);
+
+                    return false;
+                }
             });
         }
     }, [handleSubmit, onSubmit, setSubmitHandler, isValid]);
 
+    // Render a pair of form fields
+    const renderFieldPair = useCallback(
+        (fieldPair: FormFieldConfig[], index: number) => (
+            <Grid2 container spacing={2} key={index}>
+                {fieldPair.map((field) => (
+                    <Grid2 size={{ xs: 12, sm: 6 }} key={field.name}>
+                        <TextField
+                            label={field.label}
+                            type={field.type || 'text'}
+                            variant='outlined'
+                            fullWidth
+                            autoComplete={field.autoComplete}
+                            disabled={isSubmitting}
+                            {...register(field.name)}
+                            error={!!errors[field.name]}
+                            helperText={errors[field.name]?.message}
+                            aria-describedby={errors[field.name] ? `${field.name}-error` : undefined}
+                        />
+                    </Grid2>
+                ))}
+            </Grid2>
+        ),
+        [register, errors, isSubmitting]
+    );
+
     return (
-        <form
+        <Box
+            component='form'
             onSubmit={handleSubmit(onSubmit)}
-            className='mb-6 flex flex-col gap-4 rounded-lg border bg-white p-4 shadow-md'>
-            <Box className='flex gap-2 *:w-1/2'>
-                <TextField
-                    label='Name'
-                    variant='outlined'
-                    {...register('name')}
-                    error={!!errors.name}
-                    helperText={errors.name?.message}
-                />
+            className='mb-6 flex flex-col gap-4 rounded-lg border bg-white p-4 shadow-md'
+            noValidate
+            aria-label='Personal details form'>
+            <Typography variant='h6' component='h2' className='text-gray-800 mb-2'>
+                Personal Information
+            </Typography>
 
-                <TextField
-                    label='Last Name'
-                    variant='outlined'
-                    {...register('lastName')}
-                    error={!!errors.lastName}
-                    helperText={errors.lastName?.message}
-                />
+            <Box className='flex flex-col gap-4'>
+                {formFields.map((fieldPair, index) => renderFieldPair(fieldPair, index))}
             </Box>
 
-            <Box className='flex gap-2 *:w-1/2'>
-                <TextField
-                    label='Role'
-                    variant='outlined'
-                    {...register('role')}
-                    error={!!errors.role}
-                    helperText={errors.role?.message}
-                />
-
-                <TextField
-                    label='Location'
-                    variant='outlined'
-                    {...register('location')}
-                    error={!!errors.location}
-                    helperText={errors.location?.message}
-                />
+            <Box className='mt-4'>
+                <ExtraField<DetailsFormType> control={control} name='extraFields' />
             </Box>
-
-            <Box className='flex gap-2 *:w-1/2'>
-                <TextField
-                    label='Email'
-                    variant='outlined'
-                    {...register('email')}
-                    error={!!errors.email}
-                    helperText={errors.email?.message}
-                />
-                <TextField
-                    label='Phone Number'
-                    variant='outlined'
-                    {...register('phoneNumber')}
-                    error={!!errors.phoneNumber}
-                    helperText={errors.phoneNumber?.message}
-                />
-            </Box>
-
-            <ExtraField<DetailsFormType> control={control} name='extraFields' />
-        </form>
+        </Box>
     );
 }
